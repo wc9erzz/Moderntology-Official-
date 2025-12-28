@@ -1,0 +1,50 @@
+.root {
+  @apply fixed top-0 w-full z-40 transition-all duration-300 h-14 md:h-16;
+}
+
+.scrolled {
+  @apply bg-[#0a0a0f]/40 backdrop-blur-xl border-b border-white/5;
+}
+
+.transparent {
+  @apply bg-transparent border-b border-transparent;
+}
+
+.link {
+  @apply inline-flex items-center leading-6 font-medium transition ease-in-out duration-75 cursor-pointer text-white/70 rounded-md p-1;
+}
+
+.link:hover {
+  @apply text-white;
+}
+
+.link:focus {
+  @apply outline-none text-white ring-2 ring-white/50 ring-opacity-50;
+}
+
+.logo {
+  @apply cursor-pointer rounded-full transform duration-100 ease-in-out flex-shrink-0;
+}
+
+.brand {
+  @apply text-xl md:text-2xl font-black whitespace-nowrap tracking-[0.2em];
+  background: linear-gradient(90deg, #ffffff, #c084fc, #818cf8, #ffffff);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: brandShimmer 8s ease-in-out infinite;
+  text-shadow: 0 0 30px rgba(192, 132, 252, 0.3);
+}
+
+@keyframes brandShimmer {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
