@@ -11,7 +11,6 @@ import { handleRequest } from '@/utils/auth-helpers/client';
 import { getRedirectMethod, getAuthTypes } from '@/utils/auth-helpers/settings';
 import { UserWithReading } from '@/types_numera';
 import { ChevronDown, Home, BookOpen, User as UserIcon, LogOut, LogIn, Menu, X, Sparkles, LayoutDashboard, Star, FileText, Info } from 'lucide-react';
-import { AnimatePresence, motion } from 'framer-motion';
 import s from './Navbar.module.css';
 
 export default function Navlinks() {
