@@ -27,7 +27,7 @@
 }
 
 .brand {
-  @apply text-xl md:text-2xl font-black whitespace-nowrap tracking-[0.2em];
+  @apply text-lg md:text-2xl font-black whitespace-nowrap tracking-[0.2em];
   background: linear-gradient(90deg, #ffffff, #c084fc, #818cf8, #ffffff);
   background-size: 300% 100%;
   -webkit-background-clip: text;

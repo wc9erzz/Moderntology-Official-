@@ -22,7 +22,7 @@ export default function Navbar() {
       <a href="#skip" className="sr-only focus:not-sr-only">
         Skip to content
       </a>
-      <div className="max-w-6xl px-6 mx-auto">
+      <div className="max-w-6xl px-4 md:px-6 mx-auto">
         <Navlinks />
       </div>
     </nav>

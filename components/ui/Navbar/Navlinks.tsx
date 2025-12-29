@@ -287,7 +287,7 @@ export default function Navlinks() {
           ) : (
             <Link
               href={getSignInPath()}
-              className="flex items-center gap-2 px-6 py-2 text-sm font-medium text-[#09090b] bg-white hover:bg-gray-200 transition-all duration-300 rounded shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+              className="flex items-center gap-1.5 md:gap-2 px-3 md:px-6 py-2 text-xs md:text-sm font-medium text-[#09090b] bg-white hover:bg-gray-200 transition-all duration-300 rounded shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] whitespace-nowrap"
             >
               <LogIn className="h-4 w-4" />
               Sign In
