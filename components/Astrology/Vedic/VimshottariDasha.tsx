@@ -18,7 +18,7 @@ export const VimshottariDasha: React.FC<Props> = ({ moonAbsDeg, birthDate }) => 
     // Find active index based on current date
     const activeIndex = useMemo(() => {
         return timeline.findIndex(p => now >= p.start && now < p.end);
-    }, [timeline]);
+    }, [timeline, now]);
 
     // State for selected Mahadasha index
     const [selectedIndex, setSelectedIndex] = useState<number>(0);

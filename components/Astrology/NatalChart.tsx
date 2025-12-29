@@ -63,7 +63,7 @@ export function NatalChart({ data, width = 600, height = 600 }: NatalChartProps)
     // SVG mapping: TargetAngle = 180 - (PlanetAbsDeg - AscAbsDeg)
 
 
-    const getCoords = (deg: number, r: number) => {
+    const getCoords = React.useCallback((deg: number, r: number) => {
         // Correct Visual Logic: 
         // VisualAngle = 180 + (PlanetAbs - AscAbs).
         // SVG increases clockwise. Astrology increases counter-clockwise.
@@ -76,7 +76,7 @@ export function NatalChart({ data, width = 600, height = 600 }: NatalChartProps)
             x: cx + r * Math.cos(radVisual),
             y: cy + r * Math.sin(radVisual)
         };
-    };
+    }, [cx, cy, ascDeg]);
 
     // 2. DATA PREP: Segments
     const zodiacSegments = useMemo(() => {
@@ -111,7 +111,7 @@ export function NatalChart({ data, width = 600, height = 600 }: NatalChartProps)
                 labelPos
             };
         });
-    }, [radius, innerRadius, ascDeg]);
+    }, [radius, innerRadius, getCoords]);
 
     // 3. COLLISION LOGIC for Planets
     const planetNodes = useMemo(() => {
@@ -158,7 +158,7 @@ export function NatalChart({ data, width = 600, height = 600 }: NatalChartProps)
             ...p,
             pos: getCoords(p.abs_deg, planetRadiusBase + (p.rOffset || 0))
         }));
-    }, [data.points, planetRadiusBase, ascDeg]);
+    }, [data.points, planetRadiusBase, getCoords]);
 
     // 4. CURVED ASPECTS
     const aspectPaths = useMemo(() => {

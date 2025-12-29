@@ -177,7 +177,7 @@ export function CosmicLedgerTable({ chartData: rawData, orbStrictness = 'standar
                                                 </div>
                                                 <div className="flex items-baseline gap-1">
                                                     <span className="text-xs text-[var(--text-secondary)] font-mono font-bold">
-                                                        {Math.floor(planet.deg)}°{String(Math.floor(planet.min)).padStart(2, '0')}'
+                                                        {Math.floor(planet.deg)}°{String(Math.floor(planet.min)).padStart(2, '0')}&apos;
                                                     </span>
                                                 </div>
                                             </div>

@@ -55,7 +55,7 @@ export function EnterpriseChartDashboard({ chartData }: { chartData: any }) {
                                 <div className="p-4 bg-white/5 rounded-2xl border border-white/5 group hover:bg-white/10 transition-colors">
                                     <div className="text-gray-500 text-xs uppercase tracking-wider mb-1">Position</div>
                                     <div className="text-xl font-mono text-white">
-                                        {selectedItem.data.deg}° {selectedItem.data.min}'
+                                        {selectedItem.data.deg}° {selectedItem.data.min}&apos;
                                     </div>
                                 </div>
                                 <div className="p-4 bg-white/5 rounded-2xl border border-white/5 group hover:bg-white/10 transition-colors">
@@ -83,42 +83,41 @@ export function EnterpriseChartDashboard({ chartData }: { chartData: any }) {
                             <div className="mt-auto p-4 bg-white/5 rounded-lg border border-white/10">
                                 <p className="text-sm text-gray-400 leading-relaxed">
                                     {selectedItem.id} in {selectedItem.data.sign} represents a specific energetic signature.
-                                    {selectedItem.data.retrograde ? " It's internalization suggests a review of past karma." : " Direct motion facilitates outward expression."}
+                                    {selectedItem.data.retrograde ? " It&apos;s internalization suggests a review of past karma." : " Direct motion facilitates outward expression."}
                                 </p>
                             </div>
-                        </div>
-                    ) : selectedItem && selectedItem.type === 'aspect' ? (
-                        <div className="animate-fade-in-right h-full flex flex-col">
-                            <div className="flex items-start justify-between mb-8">
-                                <div>
-                                    <h2 className="text-3xl font-light text-white mb-1">{selectedItem.data.type}</h2>
-                                    <p className="text-purple-400 text-sm tracking-widest uppercase">
-                                        {selectedItem.data.p1} - {selectedItem.data.p2}
-                                    </p>
+                            ) : selectedItem && selectedItem.type === 'aspect' ? (
+                            <div className="animate-fade-in-right h-full flex flex-col">
+                                <div className="flex items-start justify-between mb-8">
+                                    <div>
+                                        <h2 className="text-3xl font-light text-white mb-1">{selectedItem.data.type}</h2>
+                                        <p className="text-purple-400 text-sm tracking-widest uppercase">
+                                            {selectedItem.data.p1} - {selectedItem.data.p2}
+                                        </p>
+                                    </div>
+                                    <div className="text-4xl opacity-50 text-white">☍</div>
                                 </div>
-                                <div className="text-4xl opacity-50 text-white">☍</div>
-                            </div>
-                            <div className="p-4 bg-white/5 rounded-2xl border border-white/5 mb-4">
-                                <div className="text-gray-500 text-xs uppercase tracking-wider mb-1">Orb</div>
-                                <div className="text-xl font-mono text-white">
-                                    {selectedItem.data.orb?.toFixed(4)}°
+                                <div className="p-4 bg-white/5 rounded-2xl border border-white/5 mb-4">
+                                    <div className="text-gray-500 text-xs uppercase tracking-wider mb-1">Orb</div>
+                                    <div className="text-xl font-mono text-white">
+                                        {selectedItem.data.orb?.toFixed(4)}°
+                                    </div>
+                                </div>
+                                <div className="text-sm text-gray-400 leading-relaxed p-4 border border-white/5 rounded-xl">
+                                    This {selectedItem.data.type} creates a geometric relationship between {selectedItem.data.p1} and {selectedItem.data.p2}.
                                 </div>
                             </div>
-                            <div className="text-sm text-gray-400 leading-relaxed p-4 border border-white/5 rounded-xl">
-                                This {selectedItem.data.type} creates a geometric relationship between {selectedItem.data.p1} and {selectedItem.data.p2}.
+                            ) : (
+                            <div className="h-full flex items-center justify-center text-gray-600">
+                                <div className="text-center">
+                                    <Crosshair className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                                    <p className="text-sm font-light tracking-wide uppercase">Select a celestial body</p>
+                                </div>
                             </div>
-                        </div>
-                    ) : (
-                        <div className="h-full flex items-center justify-center text-gray-600">
-                            <div className="text-center">
-                                <Crosshair className="w-12 h-12 mx-auto mb-4 opacity-20" />
-                                <p className="text-sm font-light tracking-wide uppercase">Select a celestial body</p>
-                            </div>
-                        </div>
                     )}
-                </div>
+                        </div>
             </div>
-            <style jsx global>{`
+                <style jsx global>{`
                 @keyframes fade-in-right {
                     from { opacity: 0; transform: translateX(10px); }
                     to { opacity: 1; transform: translateX(0); }
@@ -127,6 +126,6 @@ export function EnterpriseChartDashboard({ chartData }: { chartData: any }) {
                     animation: fade-in-right 0.4s ease-out forwards;
                 }
             `}</style>
-        </div>
-    );
+            </div>
+            );
 }

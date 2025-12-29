@@ -279,7 +279,7 @@ export const VedicChartDisplay: React.FC<Props> = ({ data }) => {
                                                     </div>
                                                     <h4 className="text-amber-200 font-bold text-sm mb-1">{yoga.name}</h4>
                                                     <p className="text-zinc-400 text-xs leading-relaxed mb-2">{yoga.description}</p>
-                                                    <p className="text-zinc-500 text-[10px] italic border-t border-white/5 pt-2 mt-2">"{yoga.effects}"</p>
+                                                    <p className="text-zinc-500 text-[10px] italic border-t border-white/5 pt-2 mt-2">&quot;{yoga.effects}&quot;</p>
                                                 </div>
                                             ))}
                                         </div>

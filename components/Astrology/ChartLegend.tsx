@@ -29,15 +29,15 @@ export function ChartLegend({ className = '' }: { className?: string }) {
                 <div className="grid grid-cols-1 gap-2">
                     <div className="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-lg">
                         <span className="text-indigo-300 font-bold block text-xs uppercase mb-1">Planets (What)</span>
-                        <p className="text-xs text-indigo-100/70">The actors or psychological functions (e.g., "The Warrior").</p>
+                        <p className="text-xs text-indigo-100/70">The actors or psychological functions (e.g., &quot;The Warrior&quot;).</p>
                     </div>
                     <div className="p-3 bg-[var(--color-accent-dim)] border border-[var(--color-accent)]/20 rounded-lg">
                         <span className="text-[var(--color-accent)] font-bold block text-xs uppercase mb-1">Signs (How)</span>
-                        <p className="text-[var(--text-muted)] opacity-70 text-xs">The costumes or styles they wear (e.g., "Impulsive").</p>
+                        <p className="text-[var(--text-muted)] opacity-70 text-xs">The costumes or styles they wear (e.g., &quot;Impulsive&quot;).</p>
                     </div>
                     <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
                         <span className="text-emerald-300 font-bold block text-xs uppercase mb-1">Houses (Where)</span>
-                        <p className="text-xs text-emerald-100/70">The stage or area of life where it happens (e.g., "Career").</p>
+                        <p className="text-xs text-emerald-100/70">The stage or area of life where it happens (e.g., &quot;Career&quot;).</p>
                     </div>
                 </div>
             </div>
