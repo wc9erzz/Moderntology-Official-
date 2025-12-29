@@ -7,12 +7,15 @@ import { getURL } from '@/utils/helpers';
 import 'styles/main.css';
 import 'styles/animations.css';
 
-const title = 'Moderntology | Bridging Spirituality & Society';
-const description = 'The convergence of ancient wisdom and modern data. Unlock exclusive insights with our unified ideology tool.';
+const title = 'Moderntology | Advanced Astrology & Numerology Readings';
+const description = 'Decode your destiny with Moderntology. The premier platform merging Vedic & Western Astrology with Numerology for precise life insights, relationship compatibility, and daily guidance.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(getURL()),
-  title: title,
+  title: {
+    default: title,
+    template: '%s | Moderntology'
+  },
   description: description,
 
   // Custom Open Graph metadata for rich social media previews
@@ -25,24 +28,29 @@ export const metadata: Metadata = {
     locale: 'en_US',
     images: [
       {
-        url: getURL(`/api/og?title=${encodeURIComponent('Moderntology')}&description=${encodeURIComponent(description)}`),
+        url: getURL(`/api/og?title=${encodeURIComponent('Moderntology')}&description=${encodeURIComponent('Bridging Spirituality & Society')}`),
         width: 1200,
         height: 630,
-        alt: 'Moderntology - Interactive Astrological & Numerological Insights',
+        alt: 'Moderntology - Advanced and Modern Astrology & Numerology',
       },
     ],
   },
 
   // Additional metadata
   keywords: [
-    'astrology',
-    'numerology',
-    'daily horoscope',
-    'spiritual insights',
+    'astrology reading',
+    'numerology calculator',
+    'birth chart analysis',
     'vedic astrology',
     'western astrology',
-    'transit tracking',
-    'personal growth'
+    'relationship compatibility',
+    'synastry chart',
+    'daily horoscope',
+    'life path number',
+    'wealth astrology',
+    'spiritual growth',
+    'astro-numerology',
+    'moderntology'
   ],
 
   authors: [{ name: 'Moderntology Team' }],
