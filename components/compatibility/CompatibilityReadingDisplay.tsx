@@ -103,7 +103,7 @@ export default function CompatibilityReadingDisplay({
                     <h2 className="text-3xl font-light mb-6 text-center">Combined Growth Areas</h2>
                     <div className="bg-white/5 border border-white/20 p-8">
                         <p className="text-gray-400 mb-6">
-                            Understanding both people's challenges helps navigate the relationship with compassion
+                            Understanding both people&apos;s challenges helps navigate the relationship with compassion
                         </p>
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
                             {[...new Set(reading.challenges)].map((challenge, idx) => (

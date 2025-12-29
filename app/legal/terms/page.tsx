@@ -14,7 +14,7 @@ export default function TermsOfServicePage() {
       <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 via-transparent to-red-500/10"></div>
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-red-500/10 rounded-full blur-3xl"></div>
-      
+
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Terms of Service</h1>
@@ -25,7 +25,7 @@ export default function TermsOfServicePage() {
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">1. Introduction</h2>
             <p>
-              Welcome to our Property Data Platform. These Terms of Service ("Terms") govern your access to and use of our website, applications, and services (collectively, the "Service"). By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the Terms, you may not access the Service.
+              Welcome to our Property Data Platform. These Terms of Service (&quot;Terms&quot;) govern your access to and use of our website, applications, and services (collectively, the &quot;Service&quot;). By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the Terms, you may not access the Service.
             </p>
           </section>
 
@@ -107,7 +107,7 @@ export default function TermsOfServicePage() {
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">5. Disclaimer of Warranties</h2>
             <p className="mb-4">
-              YOUR USE OF THE SERVICE IS AT YOUR SOLE RISK. THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. WE EXPRESSLY DISCLAIM ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+              YOUR USE OF THE SERVICE IS AT YOUR SOLE RISK. THE SERVICE IS PROVIDED ON AN &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; BASIS. WE EXPRESSLY DISCLAIM ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
             </p>
             <p className="mb-4">
               WE DO NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR-FREE, OR THAT ANY ERRORS IN THE SERVICE WILL BE CORRECTED.
@@ -127,7 +127,7 @@ export default function TermsOfServicePage() {
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">7. Indemnification</h2>
             <p className="mb-4">
-              You agree to defend, indemnify, and hold harmless IDigData LLC, its officers, directors, employees, and agents, from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys' fees) arising out of or relating to your violation of these Terms or your use of the Service.
+              You agree to defend, indemnify, and hold harmless IDigData LLC, its officers, directors, employees, and agents, from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys&apos; fees) arising out of or relating to your violation of these Terms or your use of the Service.
             </p>
           </section>
 
@@ -144,7 +144,7 @@ export default function TermsOfServicePage() {
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">9. Changes to Terms</h2>
             <p className="mb-4">
-              We reserve the right, at our sole discretion, to modify or replace these Terms at any time. We will provide notice of any changes by posting the updated Terms on this page with a new "Last Updated" date.
+              We reserve the right, at our sole discretion, to modify or replace these Terms at any time. We will provide notice of any changes by posting the updated Terms on this page with a new &quot;Last Updated&quot; date.
             </p>
             <p className="mb-4">
               Your continued use of the Service after any such changes constitutes your acceptance of the new Terms.
@@ -172,7 +172,7 @@ export default function TermsOfServicePage() {
           </section>
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );

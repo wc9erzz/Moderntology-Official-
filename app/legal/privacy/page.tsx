@@ -14,7 +14,7 @@ export default function PrivacyPolicyPage() {
       <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 via-transparent to-red-500/10"></div>
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-red-500/10 rounded-full blur-3xl"></div>
-      
+
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Privacy Policy</h1>
@@ -101,7 +101,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">Children's Privacy</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">Children&apos;s Privacy</h2>
             <p>
               Our service is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately, and we will take steps to remove such information from our systems.
             </p>
@@ -132,7 +132,7 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">Changes to This Privacy Policy</h2>
             <p>
-              We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date at the top of this policy.
+              We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the &quot;Last Updated&quot; date at the top of this policy.
             </p>
           </section>
 
@@ -150,7 +150,7 @@ export default function PrivacyPolicyPage() {
           </section>
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );

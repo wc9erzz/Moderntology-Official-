@@ -56,7 +56,7 @@ export function AstrologyChartDisplay({ chartData, system }: AstrologyChartDispl
                                     </div>
                                     <div className="text-right">
                                         <div className="text-white font-mono text-sm tracking-wide">
-                                            {data.sign} <span className="text-white/40">{data.deg}°{data.min}'</span>
+                                            {data.sign} <span className="text-white/40">{data.deg}°{data.min}&apos;</span>
                                         </div>
                                         <div className="text-[10px] text-white/30 uppercase tracking-widest">
                                             House {data.house}
@@ -86,7 +86,7 @@ export function AstrologyChartDisplay({ chartData, system }: AstrologyChartDispl
                                             {data.sign}
                                         </div>
                                         <div className="text-white/40 text-xs font-mono">
-                                            {data.deg}° {data.min}'
+                                            {data.deg}° {data.min}&apos;
                                         </div>
                                     </div>
                                 ))}

@@ -46,7 +46,7 @@ export default function UpdateLogPage() {
                 >
                     <h2 className="text-3xl font-bold mb-4">Whats Coming</h2>
                     <p className="text-zinc-300 max-w-2xl mx-auto italic">
-                        "Since we are just now launching, I will be montioring bugs and awaiting feedback, Let's build something together!"
+                        &quot;Since we are just now launching, I will be montioring bugs and awaiting feedback, Let&apos;s build something together!&quot;
                     </p>
                 </motion.div>
 

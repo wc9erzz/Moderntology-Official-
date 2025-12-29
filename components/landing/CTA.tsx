@@ -21,7 +21,7 @@ export function CTA() {
                         Ready to see current transits?
                     </h2>
                     <p className="mb-10 text-zinc-400 max-w-xl mx-auto text-lg">
-                        Experience the tool that's changing how we interpret modern spirituality.
+                        Experience the tool that&apos;s changing how we interpret modern spirituality.
                     </p>
                     <Link
                         href="/reading"

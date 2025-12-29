@@ -55,7 +55,7 @@ export function Systems() {
                         Three Systems. <span className="text-zinc-500">One Truth.</span>
                     </h2>
                     <p className="max-w-2xl text-lg text-zinc-400">
-                        We don't choose sides. We synthesize data from the world's most enduring systems to provide a complete 360° view of your cosmic blueprint.
+                        We don&apos;t choose sides. We synthesize data from the world&apos;s most enduring systems to provide a complete 360° view of your cosmic blueprint.
                     </p>
                 </motion.div>
 
