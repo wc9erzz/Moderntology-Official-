@@ -7,9 +7,10 @@ export const runtime = 'edge';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    
-    const title = searchParams.get('title') || 'The List Before The List';
-    const description = searchParams.get('description') || 'Beat The Auction! Unlock exclusive property insights and database access.';
+
+    const title = searchParams.get('title') || 'Moderntology';
+    // Removed default description to keep it cleaner or use a tagline
+    const tagline = 'Bridging Spirituality & Society';
 
     return new ImageResponse(
       (
@@ -22,92 +23,101 @@ export async function GET(request: NextRequest) {
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: '#000',
-            backgroundImage: 'radial-gradient(circle at 25% 25%, rgba(236, 72, 153, 0.15) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(239, 68, 68, 0.15) 0%, transparent 50%)',
+            fontFamily: 'sans-serif',
+            position: 'relative',
+            overflow: 'hidden',
           }}
         >
-          {/* Logo/Icon Area */}
+          {/* Background Gradients to match Hero */}
           <div
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: '40px',
+              position: 'absolute',
+              top: '-20%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '1200px',
+              height: '1200px',
+              background: 'radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, transparent 60%)',
+              pointerEvents: 'none',
             }}
-          >
-            {/* Hexagon Shape */}
-            <div
-              style={{
-                width: '80px',
-                height: '80px',
-                border: '3px solid',
-                borderImage: 'linear-gradient(135deg, #ec4899, #ef4444) 1',
-                clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-                display: 'flex',
-              }}
-            />
-          </div>
+          />
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '-20%',
+              right: '10%',
+              width: '800px',
+              height: '800px',
+              background: 'radial-gradient(circle, rgba(225, 29, 72, 0.15) 0%, transparent 60%)',
+              pointerEvents: 'none',
+            }}
+          />
 
-          {/* Title */}
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '0 80px',
-              textAlign: 'center',
+              gap: '20px',
+              zIndex: 10,
             }}
           >
+            {/* Main Brand Title */}
             <h1
               style={{
-                fontSize: '72px',
-                fontWeight: 'bold',
-                background: 'linear-gradient(135deg, #ec4899, #ef4444)',
+                fontSize: '80px',
+                fontWeight: 800,
+                color: 'white',
+                margin: 0,
+                letterSpacing: '-2px',
+                lineHeight: 1,
+                textAlign: 'center',
+              }}
+            >
+              Moderntology
+            </h1>
+
+            {/* Gradient Tagline */}
+            <div
+              style={{
+                display: 'flex',
+                fontSize: '48px',
+                fontWeight: 700,
+                background: 'linear-gradient(to right, #818cf8, #c084fc, #fb7185)',
                 backgroundClip: 'text',
                 color: 'transparent',
-                margin: '0 0 20px 0',
-                lineHeight: '1.1',
+                marginTop: '10px',
               }}
             >
-              {title}
-            </h1>
-            
+              {tagline}
+            </div>
+
             <p
               style={{
-                fontSize: '32px',
-                color: '#d4d4d8',
-                margin: '0',
-                maxWidth: '900px',
-                lineHeight: '1.4',
+                fontSize: '24px',
+                color: '#a1a1aa',
+                marginTop: '30px',
+                maxWidth: '800px',
+                textAlign: 'center',
+                lineHeight: 1.5,
               }}
             >
-              {description}
+              The convergence of ancient wisdom and modern data. Unlock exclusive insights with our unified ideology tool.
             </p>
           </div>
 
-          {/* Bottom Badge */}
+          {/* Bottom Bar decoration */}
           <div
             style={{
               position: 'absolute',
-              bottom: '40px',
-              display: 'flex',
-              alignItems: 'center',
-              backgroundColor: 'rgba(39, 39, 42, 0.8)',
-              padding: '12px 24px',
-              borderRadius: '999px',
-              border: '1px solid rgba(82, 82, 91, 0.5)',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              background: 'linear-gradient(to right, #4f46e5, #9333ea, #e11d48)',
             }}
-          >
-            <span
-              style={{
-                fontSize: '20px',
-                color: '#d4d4d8',
-                fontWeight: '600',
-              }}
-            >
-              Property Research Platform
-            </span>
-          </div>
+          />
         </div>
       ),
       {

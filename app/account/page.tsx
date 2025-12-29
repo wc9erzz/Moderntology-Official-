@@ -306,15 +306,15 @@ export default function AccountPage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="bg-white/5 border border-white/10 p-4 text-center">
                   <h4 className="text-xs uppercase tracking-wider text-gray-500 mb-1">Sun</h4>
-                  <p className="text-lg font-medium">{astrologyReading.chart_data.points.Sun?.sign || '—'}</p>
+                  <p className="text-lg font-medium truncate">{astrologyReading.chart_data.points.Sun?.sign || '—'}</p>
                 </div>
                 <div className="bg-white/5 border border-white/10 p-4 text-center">
                   <h4 className="text-xs uppercase tracking-wider text-gray-500 mb-1">Moon</h4>
-                  <p className="text-lg font-medium">{astrologyReading.chart_data.points.Moon?.sign || '—'}</p>
+                  <p className="text-lg font-medium truncate">{astrologyReading.chart_data.points.Moon?.sign || '—'}</p>
                 </div>
                 <div className="bg-white/5 border border-white/10 p-4 text-center">
                   <h4 className="text-xs uppercase tracking-wider text-gray-500 mb-1">Ascendant</h4>
-                  <p className="text-lg font-medium">{astrologyReading.chart_data.angles.Ascendant?.sign || '—'}</p>
+                  <p className="text-lg font-medium truncate">{astrologyReading.chart_data.angles.Ascendant?.sign || '—'}</p>
                 </div>
               </div>
 

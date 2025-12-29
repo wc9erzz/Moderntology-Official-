@@ -11,6 +11,7 @@ import { handleRequest } from '@/utils/auth-helpers/client';
 import { getRedirectMethod, getAuthTypes } from '@/utils/auth-helpers/settings';
 import { UserWithReading } from '@/types_numera';
 import { ChevronDown, Home, BookOpen, User as UserIcon, LogOut, LogIn, Menu, X, Sparkles, LayoutDashboard, Star, FileText, Info } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 import s from './Navbar.module.css';
 
 export default function Navlinks() {
@@ -297,175 +298,189 @@ export default function Navlinks() {
       </div>
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div
-          className="md:hidden fixed top-0 left-0 right-0 bottom-0 bg-black/95 backdrop-blur-sm z-50"
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          <div
-            className="bg-black border-r border-white/20 shadow-2xl h-full w-80 overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Mobile Menu Header */}
-            <div className="flex items-center justify-between p-4 border-b border-white/20">
-              <h1 className={s.brand}>
-                Moderntology
-              </h1>
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2 text-white/80 hover:text-white transition-colors"
-              >
-                <X className="h-6 w-6" />
-              </button>
-            </div>
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden fixed inset-0 bg-black/80 z-50 overflow-hidden" // Removed backdrop-blur-sm for performance
+              onClick={() => setMobileMenuOpen(false)}
+            />
 
-            <div className="py-4 px-4 space-y-2">
-              {/* User info (if signed in) */}
-              {userWithReading && (
-                <div className="px-4 py-3 mb-2 bg-white/5 rounded">
-                  <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Signed in as</p>
-                  <p className="text-sm text-white font-medium">
-                    {userWithReading.first_name
-                      ? `${userWithReading.first_name} ${userWithReading.last_name || ''}`
-                      : userWithReading.email
-                    }
-                  </p>
-                </div>
-              )}
-
-              <Link
-                href="/"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/') && pathname === '/'
-                  ? 'text-white bg-white/10'
-                  : 'text-white/70 hover:text-white hover:bg-white/5'
-                  }`}
-              >
-                <Home className="h-4 w-4" />
-                Home
-              </Link>
-
-              <Link
-                href="/reading"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/reading')
-                  ? 'text-white bg-white/10'
-                  : 'text-white/70 hover:text-white hover:bg-white/5'
-                  }`}
-              >
-                <Sparkles className="h-4 w-4" />
-                Hub
-              </Link>
-
-              <Link
-                href="/updates"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/updates')
-                  ? 'text-white bg-white/10'
-                  : 'text-white/70 hover:text-white hover:bg-white/5'
-                  }`}
-              >
-                <FileText className="h-4 w-4" />
-                Updates
-              </Link>
-
-              {hasReading && (
-                <>
-                  <Link
-                    href="/explore/numerology"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/explore/numerology')
-                      ? 'text-white bg-white/10'
-                      : 'text-white/70 hover:text-white hover:bg-white/5'
-                      }`}
-                  >
-                    <BookOpen className="h-4 w-4" />
-                    Numerology
-                  </Link>
-                  <Link
-                    href="/explore/astrology"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/explore/astrology')
-                      ? 'text-white bg-white/10'
-                      : 'text-white/70 hover:text-white hover:bg-white/5'
-                      }`}
-                  >
-                    <Star className="h-4 w-4" />
-                    Astrology
-                  </Link>
-                </>
-              )}
-
-
-
-              {userWithReading?.is_business_account && (
-                <Link
-                  href="/dashboard"
+            {/* Menu Panel */}
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="md:hidden fixed top-0 left-0 bottom-0 w-80 bg-black border-r border-white/20 shadow-2xl z-50 overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Mobile Menu Header */}
+              <div className="flex items-center justify-between p-4 border-b border-white/20">
+                <h1 className={s.brand}>
+                  Moderntology
+                </h1>
+                <button
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/dashboard')
+                  className="p-2 text-white/80 hover:text-white transition-colors"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+
+              <div className="py-4 px-4 space-y-2">
+                {/* User info (if signed in) */}
+                {userWithReading && (
+                  <div className="px-4 py-3 mb-2 bg-white/5 rounded">
+                    <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Signed in as</p>
+                    <p className="text-sm text-white font-medium">
+                      {userWithReading.first_name
+                        ? `${userWithReading.first_name} ${userWithReading.last_name || ''}`
+                        : userWithReading.email
+                      }
+                    </p>
+                  </div>
+                )}
+
+                <Link
+                  href="/"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/') && pathname === '/'
                     ? 'text-white bg-white/10'
                     : 'text-white/70 hover:text-white hover:bg-white/5'
                     }`}
                 >
-                  <LayoutDashboard className="h-4 w-4" />
-                  Dashboard
+                  <Home className="h-4 w-4" />
+                  Home
                 </Link>
-              )}
 
-              {userWithReading && (
-                <>
-                  <div className="pt-2 pb-1 px-4 mt-4 border-t border-white/10">
-                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Profile</p>
-                  </div>
+                <Link
+                  href="/reading"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/reading')
+                    ? 'text-white bg-white/10'
+                    : 'text-white/70 hover:text-white hover:bg-white/5'
+                    }`}
+                >
+                  <Sparkles className="h-4 w-4" />
+                  Hub
+                </Link>
 
+                <Link
+                  href="/updates"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/updates')
+                    ? 'text-white bg-white/10'
+                    : 'text-white/70 hover:text-white hover:bg-white/5'
+                    }`}
+                >
+                  <FileText className="h-4 w-4" />
+                  Updates
+                </Link>
+
+                {hasReading && (
+                  <>
+                    <Link
+                      href="/explore/numerology"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/explore/numerology')
+                        ? 'text-white bg-white/10'
+                        : 'text-white/70 hover:text-white hover:bg-white/5'
+                        }`}
+                    >
+                      <BookOpen className="h-4 w-4" />
+                      Numerology
+                    </Link>
+                    <Link
+                      href="/explore/astrology"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/explore/astrology')
+                        ? 'text-white bg-white/10'
+                        : 'text-white/70 hover:text-white hover:bg-white/5'
+                        }`}
+                    >
+                      <Star className="h-4 w-4" />
+                      Astrology
+                    </Link>
+                  </>
+                )}
+
+
+
+                {userWithReading?.is_business_account && (
                   <Link
-                    href="/about"
+                    href="/dashboard"
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/about')
+                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/dashboard')
                       ? 'text-white bg-white/10'
                       : 'text-white/70 hover:text-white hover:bg-white/5'
                       }`}
                   >
-                    <Info className="h-4 w-4" />
-                    About
+                    <LayoutDashboard className="h-4 w-4" />
+                    Dashboard
                   </Link>
-                  <Link
-                    href="/account"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/account')
-                      ? 'text-white bg-white/10'
-                      : 'text-white/70 hover:text-white hover:bg-white/5'
-                      }`}
-                  >
-                    <UserIcon className="h-4 w-4" />
-                    Manage
-                  </Link>
+                )}
 
-                  <div className="pt-4 mt-2 border-t border-white/10">
-                    <form onSubmit={(e) => { handleSignOut(e); setMobileMenuOpen(false); }}>
-                      <input type="hidden" name="pathName" value={pathname} />
-                      <button
-                        type="submit"
-                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 rounded w-full"
-                      >
-                        <LogOut className="h-4 w-4" />
-                        Sign Out
-                      </button>
-                    </form>
-                  </div>
-                </>
-              )}
-            </div>
+                {userWithReading && (
+                  <>
+                    <div className="pt-2 pb-1 px-4 mt-4 border-t border-white/10">
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Profile</p>
+                    </div>
 
-            {/* Mobile Footer */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10 bg-black">
-              <p className="text-xs text-center text-gray-600 uppercase tracking-widest">
-                Moderntology • v∞
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
+                    <Link
+                      href="/about"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/about')
+                        ? 'text-white bg-white/10'
+                        : 'text-white/70 hover:text-white hover:bg-white/5'
+                        }`}
+                    >
+                      <Info className="h-4 w-4" />
+                      About
+                    </Link>
+                    <Link
+                      href="/account"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded ${isActive('/account')
+                        ? 'text-white bg-white/10'
+                        : 'text-white/70 hover:text-white hover:bg-white/5'
+                        }`}
+                    >
+                      <UserIcon className="h-4 w-4" />
+                      Manage
+                    </Link>
+
+                    <div className="pt-4 mt-2 border-t border-white/10">
+                      <form onSubmit={(e) => { handleSignOut(e); setMobileMenuOpen(false); }}>
+                        <input type="hidden" name="pathName" value={pathname} />
+                        <button
+                          type="submit"
+                          className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 rounded w-full"
+                        >
+                          <LogOut className="h-4 w-4" />
+                          Sign Out
+                        </button>
+                      </form>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Mobile Footer */}
+              <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10 bg-black">
+                <p className="text-xs text-center text-gray-600 uppercase tracking-widest">
+                  Moderntology • v∞
+                </p>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

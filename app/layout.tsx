@@ -20,50 +20,43 @@ export const metadata: Metadata = {
     title: title,
     description: description,
     url: getURL(),
-    siteName: title,
+    siteName: 'Moderntology',
     type: 'website',
     locale: 'en_US',
     images: [
       {
-        url: getURL(`/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`),
+        url: getURL(`/api/og?title=${encodeURIComponent('Moderntology')}&description=${encodeURIComponent(description)}`),
         width: 1200,
         height: 630,
-        alt: 'The List Before The List - Property Research Platform',
+        alt: 'Moderntology - Interactive Astrological & Numerological Insights',
       },
     ],
   },
 
-
   // Additional metadata
   keywords: [
-    'property research',
-    'property tax records',
-    'real estate data',
-    'property analytics',
-    'auction properties',
-    'property investment'
+    'astrology',
+    'numerology',
+    'daily horoscope',
+    'spiritual insights',
+    'vedic astrology',
+    'western astrology',
+    'transit tracking',
+    'personal growth'
   ],
 
-  authors: [{ name: 'The List Before The List Team' }],
+  authors: [{ name: 'Moderntology Team' }],
 
   // Structured data for better previews
   other: {
-    'application-name': title,
-    'apple-mobile-web-app-title': title,
+    'application-name': 'Moderntology',
+    'apple-mobile-web-app-title': 'Moderntology',
     'apple-mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-status-bar-style': 'black-translucent',
     'format-detection': 'telephone=no',
     'mobile-web-app-capable': 'yes',
     'theme-color': '#000000',
   },
-
-  // Remove the empty icons since they might be causing issues
-  // If you want a favicon, create proper icon files
-  // icons: {
-  //   icon: '/favicon.ico',
-  //   shortcut: '/favicon-16x16.png',
-  //   apple: '/apple-touch-icon.png',
-  // },
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
@@ -71,8 +64,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="en">
       <head>
         {/* Additional meta tags for better social media support */}
-        <meta name="author" content="The List Before The List Team" />
-        <meta name="publisher" content="The List Before The List" />
+        <meta name="author" content="Moderntology Team" />
+        <meta name="publisher" content="Moderntology" />
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow" />
 
@@ -86,7 +79,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
               "name": title,
               "description": description,
               "url": getURL(),
-              "applicationCategory": "BusinessApplication",
+              "applicationCategory": "LifestyleApplication",
               "operatingSystem": "Web Browser",
               "offers": {
                 "@type": "Offer",
