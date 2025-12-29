@@ -127,7 +127,7 @@ export default function AccountPage() {
         </div>
 
         {/* Profile Information */}
-        <div className="space-y-8 border border-white/20 bg-white/5 p-10 mb-8">
+        <div className="space-y-8 border border-white/20 bg-white/5 p-6 md:p-10 mb-8">
           <div className="flex items-center gap-5">
             <div className="flex h-16 w-16 items-center justify-center rounded-none border-4 border-white bg-white/10">
               <User className="h-8 w-8" />
@@ -168,7 +168,7 @@ export default function AccountPage() {
         </div>
 
         {/* Saved Reading Section */}
-        <div className="border border-white/20 bg-white/5 p-10 mb-8">
+        <div className="border border-white/20 bg-white/5 p-6 md:p-10 mb-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <BookOpen className="h-8 w-8" />
@@ -194,7 +194,7 @@ export default function AccountPage() {
               </div>
 
               {/* Core Numbers Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 <NumberDisplay
                   label="Life Path"
                   number={reading.life_path_number}
@@ -266,7 +266,7 @@ export default function AccountPage() {
         </div>
 
         {/* Saved Astrology Section */}
-        <div className="border border-white/20 bg-white/5 p-10 mb-8">
+        <div className="border border-white/20 bg-white/5 p-6 md:p-10 mb-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <Star className="h-8 w-8" />
@@ -303,7 +303,7 @@ export default function AccountPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="bg-white/5 border border-white/10 p-4 text-center">
                   <h4 className="text-xs uppercase tracking-wider text-gray-500 mb-1">Sun</h4>
                   <p className="text-lg font-medium">{astrologyReading.chart_data.points.Sun?.sign || '—'}</p>

@@ -18,14 +18,14 @@ export default function PrivacyPolicyPage() {
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Privacy Policy</h1>
-          <p className="text-xl text-zinc-300">Last Updated: October 11, 2025</p>
+          <p className="text-xl text-zinc-300">Last Updated: December 28, 2025</p>
         </div>
 
         <div className="bg-zinc-900/40 backdrop-blur-xl border border-zinc-700 rounded-2xl p-8 text-zinc-300 leading-relaxed space-y-8">
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">Introduction</h2>
             <p>
-              Welcome to our Property Data Platform. We respect your privacy and are committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.
+              Welcome to Moderntology. We respect your privacy and are committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.
             </p>
           </section>
 
@@ -35,11 +35,11 @@ export default function PrivacyPolicyPage() {
               We collect several different types of information for various purposes to provide and improve our service to you:
             </p>
             <ul className="list-disc pl-6 space-y-2">
-              <li><strong>Personal Information:</strong> Email address, name, and payment information when you sign up.</li>
-              <li><strong>Usage Data:</strong> Information on how you access and use our services, including property searches and copy actions.</li>
+              <li><strong>Personal Information:</strong> Email address, name, birth data (date, time, and location of birth) required for astrological and numerological calculations, and payment information when you sign up.</li>
+              <li><strong>Usage Data:</strong> Information on how you access and use our services, including reading generations, chart creations, and interactions with daily updates.</li>
               <li><strong>Authentication Data:</strong> We store authentication data required to maintain your session.</li>
               <li><strong>Subscription Data:</strong> Information about your subscription plan and status.</li>
-              <li><strong>User Preferences:</strong> Information about your display preferences and settings.</li>
+              <li><strong>User Preferences:</strong> Information about your saved profiles and settings.</li>
             </ul>
           </section>
 
@@ -47,13 +47,13 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-2xl font-bold text-white mb-4">How We Use Your Information</h2>
             <p className="mb-3">We use the collected data for various purposes:</p>
             <ul className="list-disc pl-6 space-y-2">
-              <li>To provide and maintain our service</li>
+              <li>To provide and maintain our service, including generating accurate astrological and numerological readings</li>
               <li>To process your payments</li>
               <li>To notify you about changes to our service</li>
               <li>To provide customer support</li>
               <li>To gather analytics data to improve our service</li>
               <li>To prevent fraudulent activities</li>
-              <li>To personalize your experience</li>
+              <li>To personalize your experience and deliver relevant daily insights</li>
               <li>To send you marketing communications (you may opt out by emailing us)</li>
             </ul>
           </section>
@@ -61,7 +61,7 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">Data Storage and Security</h2>
             <p>
-              Your data is stored in Supabase, a secure database platform. We implement appropriate security measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction. Payment information is processed by Stripe, our payment processor, which maintains high-security standards for handling payment data.
+              Your data is stored in secure database platforms. We implement appropriate security measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction. Payment information is processed by Stripe, our payment processor, which maintains high-security standards for handling payment data.
             </p>
           </section>
 
@@ -80,6 +80,7 @@ export default function PrivacyPolicyPage() {
             <ul className="list-disc pl-6 space-y-2">
               <li><strong>Stripe:</strong> For processing payments</li>
               <li><strong>Google OAuth:</strong> For authentication</li>
+              <li><strong>Supabase:</strong> For database and authentication services</li>
             </ul>
             <p className="mt-3">
               These third parties have their own privacy policies addressing how they use such information. We do not sell your personal data to any third parties.
@@ -89,7 +90,7 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">Marketing Communications</h2>
             <p>
-              We may send you marketing emails about our services, new features, and special offers. You can opt out of receiving marketing communications at any time by emailing us at <a href="mailto:TheListBeforeTheList@gmail.com" className="text-pink-400 hover:underline">TheListBeforeTheList@gmail.com</a> with your request to unsubscribe.
+              We may send you marketing emails about our services, new features, and special offers. You can opt out of receiving marketing communications at any time by emailing us at <a href="mailto:Calebmor10@gmail.com" className="text-pink-400 hover:underline">Calebmor10@gmail.com</a> with your request to unsubscribe.
             </p>
           </section>
 
@@ -145,7 +146,7 @@ export default function PrivacyPolicyPage() {
               <strong>IDigData LLC</strong>
             </p>
             <p>
-              Email: <a href="mailto:TheListBeforeTheList@gmail.com" className="text-pink-400 hover:underline">TheListBeforeTheList@gmail.com</a>
+              Email: <a href="mailto:Calebmor10@gmail.com" className="text-pink-400 hover:underline">Calebmor10@gmail.com</a>
             </p>
           </section>
         </div>

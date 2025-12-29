@@ -18,14 +18,14 @@ export default function TermsOfServicePage() {
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Terms of Service</h1>
-          <p className="text-xl text-zinc-300">Last Updated: October 11, 2025</p>
+          <p className="text-xl text-zinc-300">Last Updated: December 28, 2025</p>
         </div>
 
         <div className="bg-zinc-900/40 backdrop-blur-xl border border-zinc-700 rounded-2xl p-8 text-zinc-300 leading-relaxed space-y-8">
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">1. Introduction</h2>
             <p>
-              Welcome to our Property Data Platform. These Terms of Service (&quot;Terms&quot;) govern your access to and use of our website, applications, and services (collectively, the &quot;Service&quot;). By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the Terms, you may not access the Service.
+              Welcome to Moderntology. These Terms of Service (&quot;Terms&quot;) govern your access to and use of our website, applications, and services (collectively, the &quot;Service&quot;). By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the Terms, you may not access the Service.
             </p>
           </section>
 
@@ -51,7 +51,7 @@ export default function TermsOfServicePage() {
               You may cancel your subscription at any time through your account settings or by contacting us. Upon cancellation, your subscription and access to the Service will be terminated immediately. You will not be charged for subsequent billing periods, but you will not receive a refund for any unused portion of your current billing period except as outlined in our Refund Policy.
             </p>
 
-            {/* New Refund Policy Section */}
+            {/* Refund Policy Section */}
             <h3 className="text-xl font-semibold text-white mt-6 mb-3">2.5 Refund Policy</h3>
             <div className="bg-pink-500/10 border border-pink-500/30 rounded-lg p-4 mb-4">
               <p className="font-bold text-white">
@@ -59,7 +59,7 @@ export default function TermsOfServicePage() {
               </p>
             </div>
             <p className="mb-4">
-              To request a refund, contact our support team at <a href="mailto:TheListBeforeTheList@gmail.com" className="text-pink-400 hover:underline">TheListBeforeTheList@gmail.com</a> within this 24-hour period. Refund requests submitted after 24 hours from purchase will not be honored.
+              To request a refund, contact our support team at <a href="mailto:Calebmor10@gmail.com" className="text-pink-400 hover:underline">Calebmor10@gmail.com</a> within this 24-hour period. Refund requests submitted after 24 hours from purchase will not be honored.
             </p>
             <p className="mb-4">
               Please note that this refund window applies to each subscription purchase or renewal separately. Once the 24-hour period has elapsed, subscription fees are non-refundable. Upon cancellation after the 24-hour refund window, your access will be terminated immediately with no refund for the unused portion of your billing period.
@@ -90,7 +90,7 @@ export default function TermsOfServicePage() {
 
             <h3 className="text-xl font-semibold text-white mt-6 mb-3">3.3 Usage Limits</h3>
             <p className="mb-4">
-              We may impose usage limits on certain features of our Service, including the number of property searches, data exports, or copies of parcel IDs. These limits may vary based on your subscription plan. Exceeding these limits may result in temporary restrictions or additional charges.
+              We may impose usage limits on certain features of our Service, including the number of reports, chart generations, or profile saves. These limits may vary based on your subscription plan. Exceeding these limits may result in temporary restrictions or additional charges.
             </p>
           </section>
 
@@ -100,7 +100,7 @@ export default function TermsOfServicePage() {
               The Service and its original content, features, and functionality are and will remain the exclusive property of IDigData LLC and its licensors. The Service is protected by copyright, trademark, and other laws of the United States and foreign countries. Our trademarks and trade dress may not be used in connection with any product or service without our prior written consent.
             </p>
             <p className="mb-4">
-              The data provided through our Service is compiled from various public and private sources. While we strive for accuracy, we make no guarantees regarding the completeness, accuracy, or reliability of this data.
+              The data provided through our Service is compiled from various algorithms, interpretive texts, and astronomical data. While we strive for accuracy in our calculations and interpretations, we make no guarantees regarding the completeness, accuracy, or reliability of this data for predictive or life-guiding purposes.
             </p>
           </section>
 
@@ -113,7 +113,7 @@ export default function TermsOfServicePage() {
               WE DO NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR-FREE, OR THAT ANY ERRORS IN THE SERVICE WILL BE CORRECTED.
             </p>
             <p className="mb-4">
-              THE INFORMATION PROVIDED THROUGH OUR SERVICE IS FOR INFORMATIONAL PURPOSES ONLY AND SHOULD NOT BE RELIED UPON FOR LEGAL, FINANCIAL, TAX, OR OTHER PROFESSIONAL ADVICE.
+              THE INFORMATION PROVIDED THROUGH OUR SERVICE IS FOR ENTERTAINMENT AND INFORMATIONAL PURPOSES ONLY AND SHOULD NOT BE RELIED UPON FOR LEGAL, FINANCIAL, MEDICAL, OR OTHER PROFESSIONAL ADVICE.
             </p>
           </section>
 
@@ -167,7 +167,7 @@ export default function TermsOfServicePage() {
               <strong>IDigData LLC</strong>
             </p>
             <p>
-              Email: <a href="mailto:TheListBeforeTheList@gmail.com" className="text-pink-400 hover:underline">TheListBeforeTheList@gmail.com</a>
+              Email: <a href="mailto:Calebmor10@gmail.com" className="text-pink-400 hover:underline">Calebmor10@gmail.com</a>
             </p>
           </section>
         </div>

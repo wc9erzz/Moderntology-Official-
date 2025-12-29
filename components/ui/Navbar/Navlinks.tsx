@@ -267,7 +267,7 @@ export default function Navlinks() {
               }`}
           >
             <Sparkles className="h-4 w-4" />
-            Reading
+            Hub
           </Link>
 
 
@@ -354,7 +354,7 @@ export default function Navlinks() {
                   }`}
               >
                 <Sparkles className="h-4 w-4" />
-                Reading
+                Hub
               </Link>
 
               <Link
