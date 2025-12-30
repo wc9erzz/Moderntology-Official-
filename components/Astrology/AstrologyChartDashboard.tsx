@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { InteractiveNatalChart } from './InteractiveNatalChart';
 import { normalizeChartData, SYMBOLS, ASPECT_CONFIG, ORB_LIMITS } from './chart-utils';
-import { AlertTriangle, Activity, Crosshair, Star, Info, LayoutTemplate, Zap, Triangle, Layers, Hexagon, RefreshCcw } from 'lucide-react';
+import { AlertTriangle, Activity, Crosshair, Star, Info, LayoutTemplate, Zap, Triangle, Layers, Hexagon, RefreshCcw, Sparkles } from 'lucide-react';
 import { detectChartPatterns } from '@/utils/astrology/pattern-detection';
 import { ChartLegend } from './ChartLegend';
 
@@ -12,6 +12,7 @@ const PatternIcon = ({ icon, color }: { icon: string, color: string }) => {
         case 'Triangle': return <Triangle size={14} style={{ fill: color, stroke: color }} />;
         case 'Zap': return <Zap size={14} style={{ fill: color, stroke: color }} />;
         case 'Layers': return <Layers size={14} style={{ color: color }} />;
+        case 'Sparkles': return <Sparkles size={14} style={{ color: color }} />;
         default: return <Star size={14} style={{ fill: color, stroke: color }} />;
     }
 };
@@ -20,8 +21,8 @@ export function AstrologyChartDashboard({
     chartData: rawData,
     showExtraPoints,
     setShowExtraPoints,
-    showNodeSignatures,
-    setShowNodeSignatures,
+    showExpertSignatures,
+    setShowExpertSignatures,
     selectedId,
     setSelectedId,
     orbStrictness = 'standard'
@@ -29,8 +30,8 @@ export function AstrologyChartDashboard({
     chartData: any;
     showExtraPoints?: boolean;
     setShowExtraPoints?: (show: boolean) => void;
-    showNodeSignatures?: boolean;
-    setShowNodeSignatures?: (show: boolean) => void;
+    showExpertSignatures?: boolean;
+    setShowExpertSignatures?: (show: boolean) => void;
     selectedId: string | null;
     setSelectedId: (id: string | null) => void;
     orbStrictness?: 'strict' | 'standard' | 'wide';
@@ -44,15 +45,21 @@ export function AstrologyChartDashboard({
 
     // Detect Patterns
     const patterns = React.useMemo(() =>
-        detectChartPatterns(chartData, { allowNodes: showNodeSignatures }),
-        [chartData, showNodeSignatures]
+        detectChartPatterns(chartData, { allowNodes: showExpertSignatures }),
+        [chartData, showExpertSignatures]
     );
 
     // Filter patterns
     const activePatterns = React.useMemo(() => {
         let currentPatterns = patterns;
+
+        // Filter by Tier if Expert Mode is OFF
+        if (!showExpertSignatures) {
+            currentPatterns = currentPatterns.filter(p => p.tier === 'basic');
+        }
+
         if (selectedId) {
-            currentPatterns = patterns.filter(p => p.planets.includes(selectedId));
+            currentPatterns = currentPatterns.filter(p => p.planets.includes(selectedId));
         }
 
         // Default Signatures (Sun Essence)
@@ -69,12 +76,13 @@ export function AstrologyChartDashboard({
                         icon: 'Fingerprint',
                         gradient: 'from-yellow-500/20 via-orange-500/10 to-transparent',
                         borderColor: 'border-yellow-500/30'
-                    }
+                    },
+                    tier: 'basic'
                 }, ...currentPatterns] as any;
             }
         }
         return currentPatterns;
-    }, [patterns, selectedId, chartData]);
+    }, [patterns, selectedId, chartData, showExpertSignatures]);
 
     const activeItem = React.useMemo(() => {
         if (!selectedId) return null;
@@ -124,8 +132,6 @@ export function AstrologyChartDashboard({
                             )}
                         </div>
 
-
-
                         {/* Bottom Left Controls: Glyph/Text Toggle */}
                         <div className="absolute bottom-6 left-6 z-20 flex flex-col items-start gap-2">
                             <button
@@ -154,14 +160,14 @@ export function AstrologyChartDashboard({
                             </button>
 
                             <button
-                                onClick={() => setShowNodeSignatures?.(!showNodeSignatures)}
-                                className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all border shadow-lg ${showNodeSignatures
+                                onClick={() => setShowExpertSignatures?.(!showExpertSignatures)}
+                                className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all border shadow-lg ${showExpertSignatures
                                     ? 'bg-purple-500/30 text-purple-100 border-purple-400/50'
                                     : 'bg-[var(--bg-card)] text-[var(--text-secondary)] border-[var(--border-card)] hover:text-white'
                                     }`}
                             >
-                                <Activity size={12} className={showNodeSignatures ? 'animate-pulse' : ''} />
-                                <span className="hidden md:inline">Node Signatures: {showNodeSignatures ? 'ON' : 'OFF'}</span>
+                                <Sparkles size={12} className={showExpertSignatures ? 'animate-pulse' : ''} />
+                                <span className="hidden md:inline">Expert Signatures: {showExpertSignatures ? 'ON' : 'OFF'}</span>
                             </button>
                         </div>
 
@@ -174,7 +180,7 @@ export function AstrologyChartDashboard({
                                 patterns={activePatterns}
                                 selectedId={selectedId}
                                 showExtraPoints={showExtraPoints}
-                                showNodeSignatures={showNodeSignatures}
+                                showExpertSignatures={showExpertSignatures}
                                 showTruePositions={showTruePositions}
                                 orbStrictness={orbStrictness}
                                 displayMode={displayMode}
@@ -217,19 +223,20 @@ export function AstrologyChartDashboard({
                                                 <div className="flex items-center gap-2">
                                                     <PatternIcon icon={pat.style.icon} color={pat.style.color} />
                                                     <span className="font-bold text-sm" style={{ color: pat.style.color }}>{pat.type}</span>
+                                                    {pat.tier === 'expert' && <span className="text-[9px] uppercase border border-white/20 px-1 rounded text-white/50">Expert</span>}
                                                 </div>
                                             </div>
                                             <p className="text-[var(--text-primary)] opacity-90 text-sm leading-relaxed font-light mb-2">{pat.description}</p>
                                         </div>
                                     ))
-                                ) : <div className="text-[var(--text-secondary)] text-sm italic text-center py-8">No major signatures detected.</div>}
+                                ) : <div className="text-[var(--text-secondary)] text-sm italic text-center py-8">No specific signatures detected using current filters.</div>}
                             </div>
                         )}
 
                         {/* CONTENT: Key */}
                         {activeTab === 'key' && (
                             <div className="flex-1 overflow-y-auto custom-scrollbar p-4 animate-fade-in-right">
-                                <ChartLegend />
+                                <ChartLegend showExpertSignatures={showExpertSignatures} />
                             </div>
                         )}
                     </div>
@@ -264,8 +271,19 @@ export function AstrologyChartDashboard({
                                     <h4 className="text-[var(--text-secondary)] text-xs uppercase tracking-wider font-bold">Aspects</h4>
                                     <div className="flex flex-wrap gap-2">
                                         {chartData.aspects
-                                            .filter((asp: any) => (asp.p1 === activeItem.id || asp.p2 === activeItem.id) &&
-                                                (showNodeSignatures || !['North Node', 'South Node'].some(n => [asp.p1, asp.p2].includes(n))))
+                                            .filter((asp: any) => {
+                                                const matchesPoint = asp.p1 === activeItem.id || asp.p2 === activeItem.id;
+                                                if (!matchesPoint) return false;
+
+                                                if (!showExpertSignatures) {
+                                                    // Filter Nodes
+                                                    if (['North Node', 'South Node'].some(n => [asp.p1, asp.p2].includes(n))) return false;
+                                                    // Filter Expert Aspects
+                                                    const BASIC_ASPECTS = ['Conjunction', 'Opposition', 'Square', 'Trine', 'Sextile', 'Parallel'];
+                                                    if (!BASIC_ASPECTS.includes(asp.type)) return false;
+                                                }
+                                                return true;
+                                            })
                                             .sort((a: any, b: any) => a.orb - b.orb)
                                             .map((asp: any, i: number) => {
                                                 const otherId = asp.p1 === activeItem.id ? asp.p2 : asp.p1;

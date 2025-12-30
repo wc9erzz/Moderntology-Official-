@@ -34,7 +34,7 @@ export default function AstrologyResultPage() {
     const [orbStrictness, setOrbStrictness] = useState<OrbStrictness>('standard');
     const [isRecalculating, setIsRecalculating] = useState(false);
     const [showExtraPoints, setShowExtraPoints] = useState(true);
-    const [showNodeSignatures, setShowNodeSignatures] = useState(false);
+    const [showExpertSignatures, setShowExpertSignatures] = useState(false);
     const [viewPerspective, setViewPerspective] = useState<'geocentric' | 'topocentric'>('geocentric');
     const [isSaving, setIsSaving] = useState(false);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -632,8 +632,8 @@ export default function AstrologyResultPage() {
                                 orbStrictness={orbStrictness}
                                 showExtraPoints={showExtraPoints}
                                 setShowExtraPoints={setShowExtraPoints}
-                                showNodeSignatures={showNodeSignatures}
-                                setShowNodeSignatures={setShowNodeSignatures}
+                                showExpertSignatures={showExpertSignatures}
+                                setShowExpertSignatures={setShowExpertSignatures}
                                 viewPerspective={viewPerspective}
                                 onPerspectiveChange={handlePerspectiveChange}
                                 system={system}
@@ -685,8 +685,8 @@ function AstrologyView({
     orbStrictness,
     showExtraPoints,
     setShowExtraPoints,
-    showNodeSignatures,
-    setShowNodeSignatures,
+    showExpertSignatures,
+    setShowExpertSignatures,
     viewPerspective,
     onPerspectiveChange,
     system,
@@ -794,8 +794,8 @@ function AstrologyView({
                 chartData={normalized}
                 showExtraPoints={showExtraPoints}
                 setShowExtraPoints={setShowExtraPoints}
-                showNodeSignatures={showNodeSignatures}
-                setShowNodeSignatures={setShowNodeSignatures}
+                showExpertSignatures={showExpertSignatures}
+                setShowExpertSignatures={setShowExpertSignatures}
                 selectedId={selectedId}
                 setSelectedId={setSelectedId}
                 orbStrictness={orbStrictness}
@@ -827,7 +827,7 @@ function AstrologyView({
                     vedicData={vedicData}
                     selectedId={selectedId}
                     orbStrictness={orbStrictness}
-                    showNodeSignatures={showNodeSignatures}
+                    showExpertSignatures={showExpertSignatures}
                     system={system}
                     setSystem={setSystem}
                     viewPerspective={viewPerspective}

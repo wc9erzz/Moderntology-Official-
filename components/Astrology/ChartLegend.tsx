@@ -17,7 +17,9 @@ const PLANET_MEANINGS = [
     { symbol: '♇', name: 'Pluto', meaning: 'Transformation, Power' },
 ];
 
-export function ChartLegend({ className = '' }: { className?: string }) {
+export function ChartLegend({ className = '', showExpertSignatures = false }: { className?: string, showExpertSignatures?: boolean }) {
+    const BASIC_ASPECTS = ['Conjunction', 'Opposition', 'Square', 'Trine', 'Sextile', 'Parallel'];
+
     return (
         <div className={`pr-0 ${className}`}>
 
@@ -89,24 +91,30 @@ export function ChartLegend({ className = '' }: { className?: string }) {
 
                 {/* Aspects Section */}
                 <div>
-                    <h4 className="text-xs uppercase tracking-wider text-[var(--color-accent)] mb-3 font-semibold">Aspects (Geometry)</h4>
+                    <div className="flex items-center justify-between mb-3">
+                        <h4 className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-semibold">Aspects (Geometry)</h4>
+                        {!showExpertSignatures && <span className="text-[9px] uppercase tracking-wider bg-white/5 px-2 py-0.5 rounded text-white/40">Basic View</span>}
+                    </div>
                     <p className="text-[10px] text-gray-500 mb-2 italic">Colored lines linking planets.</p>
                     <div className="grid grid-cols-1 gap-2">
-                        {Object.entries(ASPECT_CONFIG).map(([name, conf]) => (
-                            <div key={name} className="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors border border-transparent hover:border-white/5">
-                                <div className="flex items-center justify-center w-8 h-8 rounded bg-white/5 relative">
-                                    <span style={{ color: conf.color }} className="text-lg relative z-10">{conf.symbol}</span>
-                                    <div className="absolute inset-0 opacity-10 rounded" style={{ backgroundColor: conf.color }}></div>
+                        {Object.entries(ASPECT_CONFIG)
+                            .filter(([name]) => showExpertSignatures || BASIC_ASPECTS.includes(name))
+                            .map(([name, conf]) => (
+                                <div key={name} className="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors border border-transparent hover:border-white/5">
+                                    <div className="flex items-center justify-center w-8 h-8 rounded bg-white/5 relative">
+                                        <span style={{ color: conf.color }} className="text-lg relative z-10">{conf.symbol}</span>
+                                        <div className="absolute inset-0 opacity-10 rounded" style={{ backgroundColor: conf.color }}></div>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-sm text-gray-200 font-medium flex items-center gap-2">
+                                            {name}
+                                            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: conf.color }} />
+                                            {!BASIC_ASPECTS.includes(name) && <span className="text-[9px] border border-white/10 px-1 rounded text-white/30 uppercase">Expert</span>}
+                                        </span>
+                                        <span className="text-[10px] text-gray-500 leading-tight">{conf.desc}</span>
+                                    </div>
                                 </div>
-                                <div className="flex flex-col">
-                                    <span className="text-sm text-gray-200 font-medium flex items-center gap-2">
-                                        {name}
-                                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: conf.color }} />
-                                    </span>
-                                    <span className="text-[10px] text-gray-500 leading-tight">{conf.desc}</span>
-                                </div>
-                            </div>
-                        ))}
+                            ))}
 
                         {/* Ghost Aspects Legend Item */}
                         <div className="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors border border-transparent hover:border-white/5 mt-1 bg-white/[0.02]">
@@ -120,6 +128,45 @@ export function ChartLegend({ className = '' }: { className?: string }) {
                                 </span>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                {/* Signatures Section */}
+                <div>
+                    <div className="flex items-center justify-between mb-3">
+                        <h4 className="text-xs uppercase tracking-wider text-purple-300 font-semibold">Signatures (Patterns)</h4>
+                        {!showExpertSignatures && <span className="text-[9px] uppercase tracking-wider bg-white/5 px-2 py-0.5 rounded text-white/40">Basic Patterns</span>}
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                        {[
+                            { id: 'Grand Trine', name: 'Grand Trine', desc: 'Harmonious Flow (Triangle)', tier: 'basic', color: '#fbbf24', icon: '△' },
+                            { id: 'T-Square', name: 'T-Square', desc: 'Active Tension (Red Triangle)', tier: 'basic', color: '#f87171', icon: '⚡' },
+                            { id: 'Stellium', name: 'Stellium', desc: 'Conc. Energy (Cluster)', tier: 'basic', color: '#818cf8', icon: '⧉' },
+                            { id: 'Parallel Cluster', name: 'Parallel Cluster', desc: 'Declination Alignment', tier: 'basic', color: '#a855f7', icon: '=' },
+                            { id: 'Contra-Parallel', name: 'Contra-Parallel', desc: 'Declination Balance', tier: 'basic', color: '#d946ef', icon: '≠' },
+
+                            { id: 'Grand Cross', name: 'Grand Cross', desc: 'Intense Drive (Square)', tier: 'expert', color: '#ef4444', icon: '☒' },
+                            { id: 'Yod', name: 'Yod', desc: 'Finger of God', tier: 'expert', color: '#a3e635', icon: 'Y' },
+                            { id: 'Kite', name: 'Kite', desc: 'Directed Harmony', tier: 'expert', color: '#38bdf8', icon: '♦' },
+                            { id: 'Mystic Rectangle', name: 'Mystic Rectangle', desc: 'Practical Mysticism', tier: 'expert', color: '#c084fc', icon: '▭' },
+                            { id: 'Pentagram', name: 'Pentagram', desc: 'Creative Star (5-Point)', tier: 'expert', color: '#f472b6', icon: '★' },
+                        ]
+                            .filter(p => showExpertSignatures || p.tier === 'basic')
+                            .map((p) => (
+                                <div key={p.id} className="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors border border-transparent hover:border-white/5">
+                                    <div className="flex items-center justify-center w-8 h-8 rounded bg-white/5 relative">
+                                        <span style={{ color: p.color }} className="text-sm font-bold relative z-10">{p.icon}</span>
+                                        <div className="absolute inset-0 opacity-10 rounded" style={{ backgroundColor: p.color }}></div>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-sm text-gray-200 font-medium flex items-center gap-2">
+                                            {p.name}
+                                            {p.tier === 'expert' && <span className="text-[9px] border border-white/10 px-1 rounded text-white/30 uppercase">Expert</span>}
+                                        </span>
+                                        <span className="text-[10px] text-gray-500 leading-tight">{p.desc}</span>
+                                    </div>
+                                </div>
+                            ))}
                     </div>
                 </div>
 

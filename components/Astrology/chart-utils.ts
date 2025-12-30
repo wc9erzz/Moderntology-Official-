@@ -59,14 +59,16 @@ export const ASPECT_CONFIG: Record<string, { color: string; symbol: string; mean
     'Square': { color: '#fb923c', symbol: '□', meaning: 'Friction', desc: 'Internal conflict driving action (90°)' }, // Orange-400
     'Trine': { color: '#4ade80', symbol: '△', meaning: 'Flow', desc: 'Natural harmony and ease (120°)' }, // Green-400
     'Sextile': { color: '#2dd4bf', symbol: '✱', meaning: 'Opportunity', desc: 'Cooperative connection (60°)' }, // Teal-400
+    'Quincunx': { color: '#a3e635', symbol: 'ㅈ', meaning: 'Adjustment', desc: 'Redirecting energy (150°)' }, // Lime-400
+    'Quintile': { color: '#f472b6', symbol: 'Q', meaning: 'Creativity', desc: 'Talent and artistry (72°)' }, // Pink-400
     'Parallel': { color: '#a855f7', symbol: '∥', meaning: 'Synchronicity', desc: 'Equal declination (Power)' }, // Purple-500
     'Contra-Parallel': { color: '#d946ef', symbol: '⧉', meaning: 'Balance', desc: 'Opposite declination (Balance)' } // Fuchsia-500
 };
 
 export const ORB_LIMITS = {
-    strict: { Conjunction: 6, Opposition: 6, Trine: 6, Square: 6, default: 6 },
-    standard: { Conjunction: 9, Opposition: 9, Trine: 9, Square: 9, default: 9 },
-    wide: { Conjunction: 13, Opposition: 13, Trine: 13, Square: 13, default: 13 }
+    strict: { Conjunction: 6, Opposition: 6, Trine: 6, Square: 6, Quincunx: 2, Quintile: 1, default: 6 },
+    standard: { Conjunction: 9, Opposition: 9, Trine: 9, Square: 9, Quincunx: 3, Quintile: 2, default: 9 },
+    wide: { Conjunction: 13, Opposition: 13, Trine: 13, Square: 13, Quincunx: 4, Quintile: 3, default: 13 }
 };
 
 // --- Pro Data Mappings ---
@@ -272,13 +274,14 @@ export const normalizeChartData = (input: any): ChartData => {
 
                     checkAspect('Conjunction', 0);
                     checkAspect('Sextile', 60);
+                    checkAspect('Quintile', 72);
                     checkAspect('Square', 90);
                     checkAspect('Trine', 120);
+                    checkAspect('Quincunx', 150);
                     checkAspect('Opposition', 180);
                 }
             }
-        }
-    }
+        }    }
 
     return {
         ...input,

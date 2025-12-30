@@ -1,13 +1,13 @@
-
 import { ChartData, PointData } from './types';
 
 export interface PatternResult {
     id: string;
-    type: 'Grand Trine' | 'T-Square' | 'Stellium' | 'Grand Cross' | 'Yod' | 'Kite' | 'Parallel Cluster' | 'Parallel' | 'Contra-Parallel';
+    type: 'Grand Trine' | 'T-Square' | 'Stellium' | 'Grand Cross' | 'Yod' | 'Kite' | 'Mystic Rectangle' | 'Cradle' | 'Grand Sextile' | 'Pentagram' | 'Parallel Cluster' | 'Parallel' | 'Contra-Parallel' | 'Vital Essence';
     planets: string[];
     description: string;
     element?: string;
     is_ghost?: boolean;
+    tier?: 'basic' | 'expert';
     style: {
         color: string;
         gradient: string;
@@ -15,7 +15,6 @@ export interface PatternResult {
         borderColor: string;
     };
 }
-
 
 export const PATTERN_STYLES: Record<string, PatternResult['style']> = {
     'Grand Trine': {
@@ -40,13 +39,55 @@ export const PATTERN_STYLES: Record<string, PatternResult['style']> = {
         color: '#a855f7', // Purple-500
         gradient: 'from-purple-500/20 to-fuchsia-900/20',
         borderColor: 'border-purple-500/50',
-        icon: 'Minimize2' // Icons handled by consumer usually, providing string name
+        icon: 'Minimize2'
     },
     'Contra-Parallel': {
         color: '#d946ef', // Fuchsia-500
         gradient: 'from-fuchsia-500/20 to-pink-900/20',
         borderColor: 'border-fuchsia-500/50',
         icon: 'Maximize2'
+    },
+    'Grand Cross': {
+        color: '#ef4444', // Red-500
+        gradient: 'from-red-600/20 to-rose-950/30',
+        borderColor: 'border-red-600/50',
+        icon: 'XCircle'
+    },
+    'Yod': {
+        color: '#a3e635', // Lime-400
+        gradient: 'from-lime-500/20 to-green-900/20',
+        borderColor: 'border-lime-500/50',
+        icon: 'MoveUp'
+    },
+    'Kite': {
+        color: '#38bdf8', // Sky-400
+        gradient: 'from-sky-500/20 to-blue-900/20',
+        borderColor: 'border-sky-500/50',
+        icon: 'Navigation'
+    },
+    'Mystic Rectangle': {
+        color: '#c084fc', // Purple-400
+        gradient: 'from-purple-500/20 to-indigo-900/20',
+        borderColor: 'border-purple-500/50',
+        icon: 'Box'
+    },
+    'Cradle': {
+        color: '#fbbf24', // Amber-400
+        gradient: 'from-amber-500/20 to-orange-900/20',
+        borderColor: 'border-amber-500/50',
+        icon: 'Anchor'
+    },
+    'Grand Sextile': {
+        color: '#2dd4bf', // Teal-400
+        gradient: 'from-teal-500/20 to-emerald-900/20',
+        borderColor: 'border-teal-500/50',
+        icon: 'Hexagon'
+    },
+    'Pentagram': {
+        color: '#f472b6', // Pink-400
+        gradient: 'from-pink-500/20 to-rose-900/20',
+        borderColor: 'border-pink-500/50',
+        icon: 'Star'
     },
     'Default': {
         color: '#e4e4e7',
@@ -57,7 +98,6 @@ export const PATTERN_STYLES: Record<string, PatternResult['style']> = {
 };
 
 const getStyle = (type: string, element?: string) => {
-    // Optional: Customize Grand Trine by element
     if (type === 'Grand Trine' && element) {
         if (element === 'Fire') return { ...PATTERN_STYLES['Grand Trine'], color: '#fca5a5', gradient: 'from-orange-500/20 to-red-900/20', borderColor: 'border-orange-500/50' };
         if (element === 'Water') return { ...PATTERN_STYLES['Grand Trine'], color: '#67e8f9', gradient: 'from-cyan-500/20 to-blue-900/20', borderColor: 'border-cyan-500/50' };
@@ -67,8 +107,6 @@ const getStyle = (type: string, element?: string) => {
     return PATTERN_STYLES[type] || PATTERN_STYLES['Default'];
 };
 
-
-// Helper to build an adjacency map for easier graph traversal
 const buildAspectGraph = (aspects: ChartData['aspects']) => {
     const adj: Record<string, Array<{ target: string; type: string; is_ghost?: boolean }>> = {};
     aspects.forEach(a => {
@@ -84,7 +122,6 @@ export function detectChartPatterns(data: ChartData, options: { allowNodes?: boo
     const results: PatternResult[] = [];
     const adj = buildAspectGraph(data.aspects);
 
-    // Filter points based on options
     const targetPoints = Object.values(data.points).filter(p => {
         if (p.type === 'planet') return true;
         if (options.allowNodes && p.type === 'node') return true;
@@ -93,7 +130,7 @@ export function detectChartPatterns(data: ChartData, options: { allowNodes?: boo
 
     const planetNames = targetPoints.map(p => p.name);
 
-    // 1. DETECT STELLIUMS (3+ planets in same sign or house)
+    // 1. DETECT STELLIUMS
     const bySign: Record<string, string[]> = {};
     Object.values(data.points).forEach(p => {
         if (!bySign[p.sign]) bySign[p.sign] = [];
@@ -104,14 +141,9 @@ export function detectChartPatterns(data: ChartData, options: { allowNodes?: boo
 
     Object.entries(bySign).forEach(([sign, signPlanets]) => {
         if (signPlanets.length < 3) return;
-
-        // Find connected components within this sign using Conjunctions
-        // This ensures planets are actually clustered together, not just in the same sign
         const visited = new Set<string>();
-
         for (const planet of signPlanets) {
             if (visited.has(planet)) continue;
-
             const component: string[] = [];
             const queue = [planet];
             visited.add(planet);
@@ -119,11 +151,8 @@ export function detectChartPatterns(data: ChartData, options: { allowNodes?: boo
             while (queue.length > 0) {
                 const curr = queue.pop()!;
                 component.push(curr);
-
-                // Check neighbors in adjacency graph
                 const neighbors = adj[curr] || [];
                 neighbors.forEach(edge => {
-                    // Must be Conjunction AND in the same sign grouping
                     if (edge.type === 'Conjunction' && signPlanets.includes(edge.target) && !visited.has(edge.target)) {
                         visited.add(edge.target);
                         queue.push(edge.target);
@@ -139,7 +168,8 @@ export function detectChartPatterns(data: ChartData, options: { allowNodes?: boo
                     description: `A powerful concentration of energy in ${sign} (${component.join(', ')}).`,
                     style: getStyle('Stellium'),
                     // @ts-ignore
-                    element: getElement(sign)
+                    element: getElement(sign),
+                    tier: 'basic'
                 });
             }
         }
@@ -148,9 +178,7 @@ export function detectChartPatterns(data: ChartData, options: { allowNodes?: boo
     // 2. DETECT GRAND TRINES
     const foundTrines = new Set<string>();
     planetNames.forEach(p1 => {
-        const trinesFromP1 = adj[p1]
-            ?.filter(x => x.type === 'Trine' && planetNames.includes(x.target)) || [];
-
+        const trinesFromP1 = adj[p1]?.filter(x => x.type === 'Trine' && planetNames.includes(x.target)) || [];
         for (let i = 0; i < trinesFromP1.length; i++) {
             for (let j = i + 1; j < trinesFromP1.length; j++) {
                 const p2 = trinesFromP1[i].target;
@@ -164,8 +192,6 @@ export function detectChartPatterns(data: ChartData, options: { allowNodes?: boo
                     if (!foundTrines.has(key)) {
                         foundTrines.add(key);
                         const element = getElement(data.points[p1]?.sign);
-
-                        // Check if any edge in this triangle is a ghost
                         const edges = [
                             trinesFromP1[i],
                             trinesFromP1[j],
@@ -180,7 +206,8 @@ export function detectChartPatterns(data: ChartData, options: { allowNodes?: boo
                             element: element,
                             is_ghost: isGhost,
                             description: `A ${isGhost ? 'potential ' : ''}harmonious flow of ${element || ''} energy between ${sorted.join(', ')}.`,
-                            style: getStyle('Grand Trine', element)
+                            style: getStyle('Grand Trine', element),
+                            tier: 'basic'
                         });
                     }
                 }
@@ -191,9 +218,7 @@ export function detectChartPatterns(data: ChartData, options: { allowNodes?: boo
     // 3. DETECT T-SQUARES
     const foundTSquares = new Set<string>();
     planetNames.forEach(apex => {
-        const squaresFromApex = adj[apex]
-            ?.filter(x => x.type === 'Square' && planetNames.includes(x.target)) || [];
-
+        const squaresFromApex = adj[apex]?.filter(x => x.type === 'Square' && planetNames.includes(x.target)) || [];
         if (squaresFromApex.length >= 2) {
             for (let i = 0; i < squaresFromApex.length; i++) {
                 for (let j = i + 1; j < squaresFromApex.length; j++) {
@@ -206,7 +231,6 @@ export function detectChartPatterns(data: ChartData, options: { allowNodes?: boo
                         const key = `apex-${apex}-base-${[pA, pB].sort().join('-')}`;
                         if (!foundTSquares.has(key)) {
                             foundTSquares.add(key);
-
                             const edges = [
                                 squaresFromApex[i],
                                 squaresFromApex[j],
@@ -220,7 +244,8 @@ export function detectChartPatterns(data: ChartData, options: { allowNodes?: boo
                                 planets: [apex, pA, pB],
                                 is_ghost: isGhost,
                                 description: `${apex} acts as the focal point for ${isGhost ? 'potential ' : ''}tension between ${pA} and ${pB}.`,
-                                style: getStyle('T-Square')
+                                style: getStyle('T-Square'),
+                                tier: 'basic'
                             });
                         }
                     }
@@ -229,40 +254,212 @@ export function detectChartPatterns(data: ChartData, options: { allowNodes?: boo
         }
     });
 
-    // 4. DETECT PARALLEL CLUSTERS
-    // Group all planets that are connected by Parallel aspects within orb
-    const parallels: Record<string, string[]> = {};
-    planetNames.forEach(p => {
-        const connected = adj[p]?.filter(x => x.type === 'Parallel' && planetNames.includes(x.target)).map(x => x.target) || [];
-        if (connected.length > 0) {
-            parallels[p] = connected;
+    // 4. DETECT GRAND CROSS
+    const foundCrosses = new Set<string>();
+    const oppositions: Array<{ p1: string, p2: string, edge: any }> = [];
+    planetNames.forEach((p1, k) => {
+        adj[p1]?.forEach(x => {
+            if (x.type === 'Opposition' && planetNames.indexOf(x.target) > k) {
+                oppositions.push({ p1: p1, p2: x.target, edge: x });
+            }
+        });
+    });
+
+    for (let i = 0; i < oppositions.length; i++) {
+        for (let j = i + 1; j < oppositions.length; j++) {
+            const opp1 = oppositions[i];
+            const opp2 = oppositions[j];
+            const isSquare1 = adj[opp1.p1]?.some(x => x.target === opp2.p1 && x.type === 'Square');
+            const isSquare2 = adj[opp1.p1]?.some(x => x.target === opp2.p2 && x.type === 'Square');
+
+            if (isSquare1 && isSquare2) {
+                const allPlanets = [opp1.p1, opp1.p2, opp2.p1, opp2.p2].sort();
+                const key = allPlanets.join('-');
+
+                if (!foundCrosses.has(key)) {
+                    foundCrosses.add(key);
+                    const isGhost = opp1.edge.is_ghost || opp2.edge.is_ghost;
+                    results.push({
+                        id: `grand-cross-${key}`,
+                        type: 'Grand Cross',
+                        planets: allPlanets,
+                        is_ghost: isGhost,
+                        description: `Significant tension and drive generated by ${allPlanets.join(', ')}.`,
+                        style: getStyle('Grand Cross'),
+                        tier: 'expert'
+                    });
+                }
+            }
+        }
+    }
+
+    // 5. DETECT YOD
+    const foundYods = new Set<string>();
+    planetNames.forEach(apex => {
+        const quincunxFromApex = adj[apex]?.filter(x => x.type === 'Quincunx' && planetNames.includes(x.target)) || [];
+        if (quincunxFromApex.length >= 2) {
+            for (let i = 0; i < quincunxFromApex.length; i++) {
+                for (let j = i + 1; j < quincunxFromApex.length; j++) {
+                    const pA = quincunxFromApex[i].target;
+                    const pB = quincunxFromApex[j].target;
+
+                    const isSextile = adj[pA]?.some(x => x.target === pB && x.type === 'Sextile');
+                    if (isSextile) {
+                        const key = `yod-apex-${apex}-base-${[pA, pB].sort().join('-')}`;
+                        if (!foundYods.has(key)) {
+                            foundYods.add(key);
+                            const isGhost = quincunxFromApex[i].is_ghost || quincunxFromApex[j].is_ghost;
+                            results.push({
+                                id: key,
+                                type: 'Yod',
+                                planets: [apex, pA, pB],
+                                is_ghost: isGhost,
+                                description: `A 'Finger of God' pointing to ${apex}, demanding adjustment.`,
+                                style: getStyle('Yod'),
+                                tier: 'expert'
+                            });
+                        }
+                    }
+                }
+            }
         }
     });
 
-    // Find clustering (connected components)
-    const visited = new Set<string>();
-    Object.keys(parallels).forEach(p => {
-        if (visited.has(p)) return;
+    // 6. DETECT KITE
+    const grandTrines = results.filter(r => r.type === 'Grand Trine');
+    grandTrines.forEach(gt => {
+        const trinePlanets = gt.planets;
+        planetNames.forEach(pD => {
+            if (trinePlanets.includes(pD)) return;
 
+            let sextiles = 0;
+            let oppositions = 0;
+            trinePlanets.forEach(triP => {
+                const aspects = adj[pD] || [];
+                if (aspects.some(x => x.target === triP && x.type === 'Sextile')) sextiles++;
+                if (aspects.some(x => x.target === triP && x.type === 'Opposition')) oppositions++;
+            });
+
+            if (sextiles >= 2 && oppositions >= 1) {
+                const kitePlanets = [...trinePlanets, pD].sort();
+                const key = `kite-${kitePlanets.join('-')}`;
+
+                if (!results.some(r => r.id === key)) {
+                    results.push({
+                        id: key,
+                        type: 'Kite',
+                        planets: kitePlanets,
+                        description: `${pD} provides a focal point for the energy of the Grand Trine.`,
+                        style: getStyle('Kite'),
+                        tier: 'expert'
+                    });
+                }
+            }
+        });
+    });
+
+    // 7. MYSTIC RECTANGLE
+    for (let i = 0; i < oppositions.length; i++) {
+        for (let j = i + 1; j < oppositions.length; j++) {
+            const opp1 = oppositions[i];
+            const opp2 = oppositions[j];
+            const p1 = opp1.p1; const p2 = opp1.p2;
+            const p3 = opp2.p1; const p4 = opp2.p2;
+
+            const checkType = (a: string, b: string) => {
+                const types = adj[a]?.filter(x => x.target === b).map(x => x.type) || [];
+                if (types.includes('Sextile')) return 'Sextile';
+                if (types.includes('Trine')) return 'Trine';
+                return null;
+            };
+
+            const sides = [
+                checkType(p1, p3), checkType(p1, p4),
+                checkType(p2, p3), checkType(p2, p4)
+            ];
+
+            const sextileCount = sides.filter(s => s === 'Sextile').length;
+            const trineCount = sides.filter(s => s === 'Trine').length;
+
+            if (sextileCount === 2 && trineCount === 2) {
+                const all = [p1, p2, p3, p4].sort();
+                const key = `mystic-${all.join('-')}`;
+                if (!results.some(r => r.id === key)) {
+                    results.push({
+                        id: key,
+                        type: 'Mystic Rectangle',
+                        planets: all,
+                        description: `Practical mysticism: connecting opposite forces (${p1}-${p2} & ${p3}-${p4}).`,
+                        style: getStyle('Mystic Rectangle'),
+                        tier: 'expert'
+                    });
+                }
+            }
+        }
+    }
+
+    // 8. PENTAGRAM
+    if (planetNames.length >= 5) {
+        const pentagramsFound = new Set<string>();
+        const findQuintileCycle = (current: string, path: string[], visited: Set<string>) => {
+            if (path.length === 5) {
+                const first = path[0];
+                const closes = adj[current]?.some(x => x.target === first && x.type === 'Quintile');
+                if (closes) {
+                    const sorted = [...path].sort();
+                    const key = sorted.join('-');
+                    if (!pentagramsFound.has(key)) {
+                        pentagramsFound.add(key);
+                        results.push({
+                            id: `pentagram-${key}`,
+                            type: 'Pentagram',
+                            planets: sorted,
+                            description: `A rare creative star pattern involving ${sorted.join(', ')}.`,
+                            style: getStyle('Pentagram'),
+                            tier: 'expert'
+                        });
+                    }
+                }
+                return;
+            }
+            const links = adj[current]?.filter(x => x.type === 'Quintile') || [];
+            for (const link of links) {
+                if (!visited.has(link.target) && link.target !== path[0]) {
+                    const newVisited = new Set(visited);
+                    newVisited.add(link.target);
+                    findQuintileCycle(link.target, [...path, link.target], newVisited);
+                }
+            }
+        };
+        planetNames.forEach(p => findQuintileCycle(p, [p], new Set([p])));
+    }
+
+    // 9. DETECT PARALLEL CLUSTERS
+    const parallels: Record<string, string[]> = {};
+    planetNames.forEach(p => {
+        const connected = adj[p]?.filter(x => x.type === 'Parallel' && planetNames.includes(x.target)).map(x => x.target) || [];
+        if (connected.length > 0) parallels[p] = connected;
+    });
+
+    const visitedParallels = new Set<string>();
+    Object.keys(parallels).forEach(p => {
+        if (visitedParallels.has(p)) return;
         const cluster = new Set<string>();
         const queue = [p];
 
         while (queue.length > 0) {
             const curr = queue.pop()!;
-            if (visited.has(curr)) continue;
-            visited.add(curr);
+            if (visitedParallels.has(curr)) continue;
+            visitedParallels.add(curr);
             cluster.add(curr);
-
             const neighbors = parallels[curr] || [];
             neighbors.forEach(n => {
-                if (!visited.has(n)) queue.push(n);
+                if (!visitedParallels.has(n)) queue.push(n);
             });
         }
 
         if (cluster.size >= 2) {
             const planets = Array.from(cluster).sort();
-
-            // Check if ANY parallel in this cluster is a ghost
             let clusterGhost = false;
             planets.forEach(p1 => {
                 adj[p1]?.forEach(edge => {
@@ -278,12 +475,13 @@ export function detectChartPatterns(data: ChartData, options: { allowNodes?: boo
                 is_ghost: clusterGhost,
                 description: `${clusterGhost ? 'Potential d' : 'D'}eclination alignment between ${planets.join(', ')}.`,
                 planets: planets,
-                style: getStyle('Parallel Cluster')
+                style: getStyle('Parallel Cluster'),
+                tier: 'basic'
             } as any);
         }
     });
 
-    // 5. DETECT CONTRA-PARALLELS (Pairs)
+    // 10. DETECT CONTRA-PARALLELS
     const foundCP = new Set<string>();
     planetNames.forEach(p1 => {
         const cp = adj[p1]?.filter(x => x.type === 'Contra-Parallel' && planetNames.includes(x.target)).map(x => x.target) || [];
@@ -299,16 +497,21 @@ export function detectChartPatterns(data: ChartData, options: { allowNodes?: boo
                     planets: sorted,
                     is_ghost: isGhost,
                     description: `Balancing ${isGhost ? 'potential ' : ''}opposite declinations: ${p1} & ${p2}.`,
-                    style: getStyle('Contra-Parallel')
+                    style: getStyle('Contra-Parallel'),
+                    tier: 'basic'
                 } as any);
             }
         });
     });
 
+    // Final clean up: ensure all have tiers
+    results.forEach(r => {
+        if (!r.tier) r.tier = 'expert';
+    });
+
     return results;
 }
 
-// Helper for Elements
 function getElement(sign: string): string {
     const map: Record<string, string> = {
         'Aries': 'Fire', 'Leo': 'Fire', 'Sagittarius': 'Fire',

@@ -37,7 +37,7 @@ interface InteractiveNatalChartProps {
     patterns?: PatternResult[];
     selectedId?: string | null;
     showExtraPoints?: boolean;
-    showNodeSignatures?: boolean;
+    showExpertSignatures?: boolean;
     showTruePositions?: boolean;
     orbStrictness?: 'strict' | 'standard' | 'wide';
     displayMode?: 'glyphs' | 'text';
@@ -50,7 +50,7 @@ export function InteractiveNatalChart({
     patterns = [],
     selectedId = null,
     showExtraPoints = false,
-    showNodeSignatures = false,
+    showExpertSignatures = false,
     showTruePositions = false,
     orbStrictness = 'standard',
     displayMode = 'glyphs'
@@ -576,8 +576,14 @@ export function InteractiveNatalChart({
             if (!p1 || !p2) return null;
 
             // Trigger exit animation by returning null when toggle is OFF
-            if (!showNodeSignatures) {
+            if (!showExpertSignatures) {
+                // 1. Hide Node aspects
                 if (p1.type === 'node' || p2.type === 'node') return null;
+
+                // 2. Hide Expert aspects (Quincunx, Quintile, Contra-Parallel)
+                // Always show: Conjunction, Opposition, Square, Trine, Sextile, Parallel
+                const BASIC_ASPECTS = ['Conjunction', 'Opposition', 'Square', 'Trine', 'Sextile', 'Parallel'];
+                if (!BASIC_ASPECTS.includes(asp.type)) return null;
             }
 
             const limits = ORB_LIMITS[orbStrictness] || ORB_LIMITS['standard'];
@@ -612,7 +618,7 @@ export function InteractiveNatalChart({
 
             return { d, color, opacity, id: key, is_ghost: isGhost, ...asp };
         }).filter(Boolean);
-    }, [planetNodes, normalizedData.aspects, cx, cy, showNodeSignatures, orbStrictness, R]);
+    }, [planetNodes, normalizedData.aspects, cx, cy, showExpertSignatures, orbStrictness, R]);
 
     const containerVariants = {
         hidden: { opacity: 0, scale: 0.95 },
