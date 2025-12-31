@@ -12,6 +12,9 @@ const description = 'Decode your destiny with Moderntology. The premier platform
 
 export const metadata: Metadata = {
   metadataBase: new URL(getURL()),
+  alternates: {
+    canonical: '/',
+  },
   title: {
     default: title,
     template: '%s | Moderntology'
@@ -26,14 +29,7 @@ export const metadata: Metadata = {
     siteName: 'Moderntology',
     type: 'website',
     locale: 'en_US',
-    images: [
-      {
-        url: getURL(`/api/og?title=${encodeURIComponent('Moderntology')}&description=${encodeURIComponent('Bridging Spirituality & Society')}`),
-        width: 1200,
-        height: 630,
-        alt: 'Moderntology - Advanced and Modern Astrology & Numerology',
-      },
-    ],
+    // images: handled automatically by app/opengraph-image.tsx
   },
 
   // Additional metadata
