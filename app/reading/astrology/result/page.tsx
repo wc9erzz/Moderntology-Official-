@@ -35,6 +35,7 @@ export default function AstrologyResultPage() {
     const [isRecalculating, setIsRecalculating] = useState(false);
     const [showExtraPoints, setShowExtraPoints] = useState(true);
     const [showExpertSignatures, setShowExpertSignatures] = useState(false);
+    const [showNodeSignatures, setShowNodeSignatures] = useState(true);
     const [viewPerspective, setViewPerspective] = useState<'geocentric' | 'topocentric'>('geocentric');
     const [isSaving, setIsSaving] = useState(false);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -634,6 +635,8 @@ export default function AstrologyResultPage() {
                                 setShowExtraPoints={setShowExtraPoints}
                                 showExpertSignatures={showExpertSignatures}
                                 setShowExpertSignatures={setShowExpertSignatures}
+                                showNodeSignatures={showNodeSignatures}
+                                setShowNodeSignatures={setShowNodeSignatures}
                                 viewPerspective={viewPerspective}
                                 onPerspectiveChange={handlePerspectiveChange}
                                 system={system}
@@ -687,6 +690,8 @@ function AstrologyView({
     setShowExtraPoints,
     showExpertSignatures,
     setShowExpertSignatures,
+    showNodeSignatures,
+    setShowNodeSignatures,
     viewPerspective,
     onPerspectiveChange,
     system,
@@ -796,6 +801,8 @@ function AstrologyView({
                 setShowExtraPoints={setShowExtraPoints}
                 showExpertSignatures={showExpertSignatures}
                 setShowExpertSignatures={setShowExpertSignatures}
+                showNodeSignatures={showNodeSignatures}
+                setShowNodeSignatures={setShowNodeSignatures}
                 selectedId={selectedId}
                 setSelectedId={setSelectedId}
                 orbStrictness={orbStrictness}
@@ -828,6 +835,7 @@ function AstrologyView({
                     selectedId={selectedId}
                     orbStrictness={orbStrictness}
                     showExpertSignatures={showExpertSignatures}
+                    showNodeSignatures={showNodeSignatures}
                     system={system}
                     setSystem={setSystem}
                     viewPerspective={viewPerspective}
@@ -873,7 +881,7 @@ function AstrologyView({
                         <EngineerView
                             key={`western-south`}
                             data={normalized}
-                            system={system}
+                            system={'western'}
                             showExtraPoints={showExtraPoints}
                             selectedId={selectedId}
                             onSelect={(id: string) => setSelectedId(id)}
