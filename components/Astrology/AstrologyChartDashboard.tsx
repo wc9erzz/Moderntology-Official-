@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { InteractiveNatalChart } from './InteractiveNatalChart';
 import { normalizeChartData, SYMBOLS, ASPECT_CONFIG, ORB_LIMITS } from './chart-utils';
 import { AlertTriangle, Activity, Crosshair, Star, Info, LayoutTemplate, Zap, Triangle, Layers, Hexagon, RefreshCcw, Sparkles, GitCommit } from 'lucide-react';
-import { detectChartPatterns } from '@/utils/astrology/pattern-detection';
+
+import { PatternResult } from '@/utils/astrology/pattern-detection';
 import { ChartLegend } from './ChartLegend';
 
 // Helper to render dynamic icons
@@ -56,12 +57,11 @@ export function AstrologyChartDashboard({
 
     // Detect Patterns
     const patterns = React.useMemo(() => {
-        const res = detectChartPatterns(chartData, { allowNodes: showNodeSignatures });
-        console.log('[DEBUG] Patterns:', res.length, showNodeSignatures, res);
-        console.log('[DEBUG] ChartData Points:', Object.keys(chartData.points));
-        return res;
+        // Use pre-calculated patterns if available, otherwise fallback to empty
+        // This relies on patterns being injected in AstrologyView
+        return (chartData.patterns as PatternResult[]) || [];
     },
-        [chartData, showNodeSignatures]
+        [chartData]
     );
 
     // Filter patterns
@@ -69,20 +69,28 @@ export function AstrologyChartDashboard({
         let currentPatterns = patterns;
 
         // Filter by Tier if Expert Mode is OFF
+        // Filter by Tier if Expert Mode is OFF
         if (!showExpertSignatures) {
-            currentPatterns = currentPatterns.filter(p => {
-                // EXCEPTION: If Node Signatures is ON, always show patterns involving Nodes,
-                // even if they are technically "Expert" tier (like a Yod involving Nodes).
-                if (showNodeSignatures) {
-                    const hasNode = p.planets.some(pl => ['Rahu', 'Ketu', 'North Node', 'South Node'].includes(pl));
-                    if (hasNode) return true;
-                }
-                return p.tier === 'basic';
-            });
+            currentPatterns = currentPatterns.filter(p => p.tier === 'basic');
         }
 
         if (selectedId) {
             currentPatterns = currentPatterns.filter(p => p.planets.includes(selectedId));
+        }
+
+        // FILTER: Remove patterns involving Nodes if showNodeSignatures is FALSE
+        if (!showNodeSignatures) {
+            currentPatterns = currentPatterns.filter(p => {
+                // Check every planet in the pattern
+                // If ANY of them is a Node, exclude the pattern
+                return p.planets.every(name => {
+                    const point = chartData.points[name];
+                    // Check type 'node' OR common names just to be safe
+                    if (point?.type === 'node') return false;
+                    if (['North Node', 'South Node', 'Rahu', 'Ketu', 'True Node', 'Mean Node'].includes(name)) return false;
+                    return true;
+                });
+            });
         }
 
         // Default Signatures (Sun Essence)
@@ -100,13 +108,14 @@ export function AstrologyChartDashboard({
                         gradient: 'from-yellow-500/20 via-orange-500/10 to-transparent',
                         borderColor: 'border-yellow-500/30'
                     },
-                    tier: 'basic'
-                }, ...currentPatterns] as any;
+                    tier: 'basic',
+                    aspects: []
+                }, ...currentPatterns] as PatternResult[];
             }
         }
 
         return currentPatterns;
-    }, [patterns, selectedId, chartData, showExpertSignatures]);
+    }, [patterns, selectedId, chartData, showExpertSignatures, showNodeSignatures]);
 
     const activeItem = React.useMemo(() => {
         if (!selectedId) return null;
@@ -262,7 +271,27 @@ export function AstrologyChartDashboard({
                                                     {pat.tier === 'expert' && <span className="text-[9px] uppercase border border-white/20 px-1 rounded text-white/50">Expert</span>}
                                                 </div>
                                             </div>
-                                            <p className="text-[var(--text-primary)] opacity-90 text-sm leading-relaxed font-light mb-2">{pat.description}</p>
+                                            <p className="text-[var(--text-primary)] opacity-90 text-sm leading-relaxed font-light mb-3">{pat.description}</p>
+
+                                            {/* Aspects List */}
+                                            {pat.aspects && pat.aspects.length > 0 && (
+                                                <div className="flex flex-wrap gap-1.5 pt-2 border-t border-white/5">
+                                                    {pat.aspects.map((aspect, idx) => {
+                                                        const cfg = ASPECT_CONFIG[aspect.type] || { symbol: '?', color: '#888' };
+                                                        return (
+                                                            <div key={idx} className={`text-[10px] px-2 py-1 bg-black/20 rounded border border-white/5 flex items-center gap-1.5 ${aspect.is_ghost ? 'opacity-50 dashed-border' : ''}`}>
+                                                                <span style={{ color: cfg.color }} className="font-bold text-xs">{cfg.symbol}</span>
+                                                                <div className="flex items-center gap-1 text-[var(--text-secondary)]">
+                                                                    <span className="uppercase font-bold tracking-wider">{SYMBOLS[aspect.p1] || aspect.p1.substring(0, 2)}</span>
+                                                                    <span className="opacity-50 text-[8px]">-</span>
+                                                                    <span className="uppercase font-bold tracking-wider">{SYMBOLS[aspect.p2] || aspect.p2.substring(0, 2)}</span>
+                                                                </div>
+                                                                <span className="text-[9px] font-mono opacity-60 ml-0.5">{aspect.orb.toFixed(1)}°</span>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            )}
                                         </div>
                                     ))
                                 ) : <div className="text-[var(--text-secondary)] text-sm italic text-center py-8">No specific signatures detected using current filters.</div>}

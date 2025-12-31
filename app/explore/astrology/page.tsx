@@ -844,7 +844,11 @@ function AstrologyView({
                             <span className="text-zinc-300 text-[10px] uppercase tracking-[0.3em] font-black">Pattern Signatures</span>
                             <div className="h-px bg-white/10 flex-grow" />
                         </div>
-                        <ChartSignatures data={normalized} />
+                        <ChartSignatures
+                            data={normalized}
+                            showExpertSignatures={showExpertSignatures}
+                            showNodeSignatures={showNodeSignatures}
+                        />
                     </div>
                 </div>
 

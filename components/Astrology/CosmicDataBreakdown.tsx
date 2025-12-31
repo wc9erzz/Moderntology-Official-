@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Lock, Unlock, Activity, Layers, ArrowRight, Star, Sparkles, ChevronDown, ChevronUp, Info } from 'lucide-react';
 import { ChartData, PointData, SYMBOLS, normalizeChartData, ELEMENT_MAP, MODALITY_MAP, getDignity, SIGN_COLORS, ASPECT_CONFIG, ORB_LIMITS, getSignIndex } from './chart-utils';
-import { detectChartPatterns, PatternResult } from '@/utils/astrology/pattern-detection';
+
 import { AstrologyReferenceGuide } from './AstrologyReferenceGuide';
 import { AstrologyControls } from './AstrologyControls';
 
@@ -43,7 +43,7 @@ export function CosmicLedgerTable({ chartData: rawData, orbStrictness = 'standar
 
     const MAIN_BODIES = [
         'Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto',
-        'North Node', 'South Node', 'Chiron', 'Lilith', 'Ascendant', 'Midheaven'
+        'North Node', 'South Node', 'Rahu', 'Ketu', 'Chiron', 'Lilith', 'Ascendant', 'Midheaven'
     ];
 
     const filteredPlanets = planets.filter(p => {
@@ -121,18 +121,14 @@ export function CosmicLedgerTable({ chartData: rawData, orbStrictness = 'standar
                                 const involvesPlanet = a.p1 === planet.name || a.p2 === planet.name;
                                 if (!involvesPlanet) return false;
                                 if (!showExpertSignatures) {
-                                    // EXCEPTION: If Node Signatures is ON, always show aspects involving Nodes
-                                    const p1IsNode = ['North Node', 'South Node', 'Rahu', 'Ketu'].includes(a.p1);
-                                    const p2IsNode = ['North Node', 'South Node', 'Rahu', 'Ketu'].includes(a.p2);
-
-                                    if (showNodeSignatures && (p1IsNode || p2IsNode)) {
-                                        // Allow it
-                                    } else {
-                                        if (p1IsNode || p2IsNode) return false;
-                                        const BASIC_ASPECTS = ['Conjunction', 'Opposition', 'Square', 'Trine', 'Sextile', 'Parallel'];
-                                        if (!BASIC_ASPECTS.includes(a.type)) return false;
-                                    }
+                                    const BASIC_ASPECTS = ['Conjunction', 'Opposition', 'Square', 'Trine', 'Sextile', 'Parallel'];
+                                    if (!BASIC_ASPECTS.includes(a.type)) return false;
                                 }
+
+                                // Handle Node Visibility (Redundant if 'allowNodes' works upstream but good for safety)
+                                const p1IsNode = ['North Node', 'South Node', 'Rahu', 'Ketu'].includes(a.p1);
+                                const p2IsNode = ['North Node', 'South Node', 'Rahu', 'Ketu'].includes(a.p2);
+                                if (!showNodeSignatures && (p1IsNode || p2IsNode)) return false;
                                 return true;
                             })
                             .sort((a: any, b: any) => a.orb - b.orb);

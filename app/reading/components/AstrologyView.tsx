@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/Toasts/use-toast';
 import { Save, Loader2, User, MessageCircle } from 'lucide-react';
 import { AstrologyEngine, OrbStrictness } from '@/utils/astrology/AstrologyEngine'; // Import Engine
+import { detectChartPatterns } from '@/utils/astrology/pattern-detection';
 import Link from 'next/link';
 import { InteractiveNatalChart } from '@/components/Astrology/InteractiveNatalChart';
 import { motion } from 'framer-motion';
@@ -140,6 +141,13 @@ export function AstrologyView({ user }: AstrologyViewProps) {
 
             console.log('🔍 Western chart system:', western.meta?.system);
             console.log('🔍 Vedic chart system:', vedic.meta?.system);
+
+            // Calculate Patterns NOW (Data Acquisition Phase)
+            // We do this here so it's calculated once and saved with the chart
+            western.patterns = detectChartPatterns(western, { allowNodes: true });
+            vedic.patterns = detectChartPatterns(vedic, { allowNodes: true });
+
+            console.log('✅ Patterns Calculated:', western.patterns.length, 'Western', vedic.patterns.length, 'Vedic');
 
             setWesternData(western);
             setVedicData(vedic);

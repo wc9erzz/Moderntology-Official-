@@ -149,8 +149,24 @@ const SignatureCard = ({ result }: { result: any }) => {
     );
 };
 
-export const ChartSignatures = ({ data }: AstrologyDiveProps) => {
-    const patterns = React.useMemo(() => detectChartPatterns(data), [data]);
+// Extended props for Signatures
+interface SignatureProps extends AstrologyDiveProps {
+    showExpertSignatures?: boolean;
+    showNodeSignatures?: boolean;
+}
+
+export const ChartSignatures = ({ data, showExpertSignatures = false, showNodeSignatures = false }: SignatureProps) => {
+    const patterns = React.useMemo(() => {
+        // 1. Detect Patterns (passing node permission)
+        let results = detectChartPatterns(data, { allowNodes: showNodeSignatures });
+
+        // 2. Filter based on Expert Toggle
+        if (!showExpertSignatures) {
+            results = results.filter(p => p.tier === 'basic');
+        }
+        return results;
+    }, [data, showExpertSignatures, showNodeSignatures]);
+
     if (patterns.length === 0) return null;
 
     return (
