@@ -22,7 +22,7 @@ export default function AccountPage() {
         const supabase = createClient();
         const data = await getUserWithReading(supabase as any);
 
-        console.log('Loaded data:', data); // Debug log
+
 
         if (!data.profile) {
           setError('No profile found');

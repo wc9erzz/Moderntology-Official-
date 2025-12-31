@@ -1,6 +1,7 @@
 'use client';
 
 import React, { Suspense } from 'react';
+import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Button from '@/components/ui/Button';
@@ -97,10 +98,12 @@ function TarotResultsContent() {
                                         {/* Placeholder Card Art */}
                                         <div className="relative aspect-[2/3] w-full max-w-[200px] overflow-hidden rounded-lg shadow-lg">
                                             {card.imagePath && !card.imagePath.includes("placeholder") ? ( // Improved check
-                                                <img
+                                                <Image
                                                     src={card.imagePath}
                                                     alt={card.name}
-                                                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                    fill
+                                                    sizes="(max-width: 768px) 100vw, 300px"
+                                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
                                                 />
                                             ) : (
                                                 <div className="flex h-full w-full flex-col items-center justify-center bg-slate-950 text-slate-700">

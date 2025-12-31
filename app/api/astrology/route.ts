@@ -65,6 +65,6 @@ export async function POST(request: Request) {
         } catch (e) { /* ignore */ }
 
         console.error('Astrology API Error:', error);
-        return NextResponse.json({ error: msg }, { status: 500 });
+        return NextResponse.json({ error: 'An unexpected error occurred while processing your request.' }, { status: 500 });
     }
 }

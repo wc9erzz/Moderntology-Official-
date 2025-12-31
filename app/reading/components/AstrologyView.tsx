@@ -91,7 +91,7 @@ export function AstrologyView({ user }: AstrologyViewProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('🔍 Generating BOTH Western and Vedic charts simultaneously...');
+
         setError('');
         setLoading(true);
         setWesternData(null);
@@ -139,15 +139,14 @@ export function AstrologyView({ user }: AstrologyViewProps) {
                 throw new Error('Incomplete data received from server');
             }
 
-            console.log('🔍 Western chart system:', western.meta?.system);
-            console.log('🔍 Vedic chart system:', vedic.meta?.system);
+
 
             // Calculate Patterns NOW (Data Acquisition Phase)
             // We do this here so it's calculated once and saved with the chart
             western.patterns = detectChartPatterns(western, { allowNodes: true });
             vedic.patterns = detectChartPatterns(vedic, { allowNodes: true });
 
-            console.log('✅ Patterns Calculated:', western.patterns.length, 'Western', vedic.patterns.length, 'Vedic');
+
 
             setWesternData(western);
             setVedicData(vedic);

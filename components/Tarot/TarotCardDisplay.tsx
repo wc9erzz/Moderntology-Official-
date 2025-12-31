@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { TarotCard } from '@/types/tarot';
 import { cn } from '@/utils/cn';
@@ -42,10 +43,13 @@ export default function TarotCardDisplay({ card, index, showDelay = 0 }: TarotCa
     return (
         <div className="relative aspect-[2/3] w-full max-w-[300px] overflow-hidden rounded-2xl border-2 border-indigo-500/20 shadow-2xl transition-transform duration-700 group-hover:scale-[1.02] bg-slate-900">
             {card.imagePath && !card.imagePath.includes("placeholder") ? (
-                <img
+                // ... (in component)
+                <Image
                     src={card.imagePath}
                     alt={card.name}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
             ) : (
                 /* Dynamic Fallback: Pip Layout */
