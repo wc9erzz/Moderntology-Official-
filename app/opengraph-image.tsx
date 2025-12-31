@@ -9,6 +9,14 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image() {
+    // Generate some static "stars" for the background
+    const stars = Array.from({ length: 50 }).map((_, i) => ({
+        top: `${Math.random() * 100}%`,
+        left: `${Math.random() * 100}%`,
+        opacity: Math.random() * 0.5 + 0.2,
+        size: Math.random() * 2 + 1,
+    }));
+
     return new ImageResponse(
         (
             <div
@@ -19,22 +27,55 @@ export default async function Image() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: '#000',
+                    // Gradient Mesh Background from AnimatedBackground.tsx
+                    background: 'linear-gradient(to bottom, #1a0a1a, #0a0a1a, #000000)',
                     fontFamily: 'sans-serif',
                     position: 'relative',
                     overflow: 'hidden',
                 }}
             >
-                {/* Background Gradients (Blobs) */}
+                {/* Starfield Layer */}
+                <div style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+                    {stars.map((star, i) => (
+                        <div
+                            key={i}
+                            style={{
+                                position: 'absolute',
+                                top: star.top,
+                                left: star.left,
+                                width: `${star.size}px`,
+                                height: `${star.size}px`,
+                                borderRadius: '50%',
+                                backgroundColor: '#fff',
+                                opacity: star.opacity,
+                                boxShadow: '0 0 2px rgba(255, 255, 255, 0.8)',
+                            }}
+                        />
+                    ))}
+                </div>
+
+                {/* Animated Gradient Blobs (Static Representation) */}
                 <div
                     style={{
                         position: 'absolute',
-                        top: '-20%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: '1000px',
-                        height: '1000px',
-                        background: 'radial-gradient(circle, rgba(79, 70, 229, 0.25) 0%, transparent 70%)',
+                        top: '-10%',
+                        left: '20%',
+                        width: '800px',
+                        height: '800px',
+                        background: 'radial-gradient(circle, rgba(225, 29, 72, 0.15) 0%, transparent 70%)', // Rose
+                        filter: 'blur(40px)',
+                        pointerEvents: 'none',
+                    }}
+                />
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: '20%',
+                        right: '-10%',
+                        width: '700px',
+                        height: '700px',
+                        background: 'radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%)', // Indigo
+                        filter: 'blur(40px)',
                         pointerEvents: 'none',
                     }}
                 />
@@ -42,10 +83,11 @@ export default async function Image() {
                     style={{
                         position: 'absolute',
                         bottom: '-20%',
-                        right: '-10%',
-                        width: '800px',
-                        height: '800px',
-                        background: 'radial-gradient(circle, rgba(225, 29, 72, 0.2) 0%, transparent 70%)',
+                        left: '30%',
+                        width: '900px',
+                        height: '600px',
+                        background: 'radial-gradient(circle, rgba(88, 28, 135, 0.2) 0%, transparent 70%)', // Purple
+                        filter: 'blur(40px)',
                         pointerEvents: 'none',
                     }}
                 />
@@ -71,7 +113,7 @@ export default async function Image() {
                             background: 'linear-gradient(to bottom, #ffffff, #a1a1aa)',
                             backgroundClip: 'text',
                             color: 'transparent',
-                            paddingBottom: '10px', // Prevent clip cutoff
+                            paddingBottom: '10px',
                         }}
                     >
                         Bridging Spirituality
@@ -88,7 +130,7 @@ export default async function Image() {
                             background: 'linear-gradient(to right, #818cf8, #c084fc, #fb7185)',
                             backgroundClip: 'text',
                             color: 'transparent',
-                            paddingBottom: '10px', // Prevent clip cutoff
+                            paddingBottom: '10px',
                         }}
                     >
                         & Society
@@ -104,6 +146,7 @@ export default async function Image() {
                             textAlign: 'center',
                             lineHeight: 1.5,
                             fontWeight: 400,
+                            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
                         }}
                     >
                         The convergence of ancient wisdom and modern data.
