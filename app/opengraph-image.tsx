@@ -35,7 +35,7 @@ export default async function Image() {
                 }}
             >
                 {/* Starfield Layer */}
-                <div style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+                <div style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'flex' }}>
                     {stars.map((star, i) => (
                         <div
                             key={i}
