@@ -38,6 +38,7 @@ interface InteractiveNatalChartProps {
     selectedId?: string | null;
     showExtraPoints?: boolean;
     showExpertSignatures?: boolean;
+    showNodeSignatures?: boolean;
     showTruePositions?: boolean;
     orbStrictness?: 'strict' | 'standard' | 'wide';
     displayMode?: 'glyphs' | 'text';
@@ -51,6 +52,7 @@ export function InteractiveNatalChart({
     selectedId = null,
     showExtraPoints = false,
     showExpertSignatures = false,
+    showNodeSignatures = false,
     showTruePositions = false,
     orbStrictness = 'standard',
     displayMode = 'glyphs'
@@ -217,7 +219,8 @@ export function InteractiveNatalChart({
             // Filter out angles unless we want them as nodes (usually handled separately)
             if (['Ascendant', 'Midheaven', 'Descendant', 'IC', 'ASC', 'MC', 'DSC', 'Vertex', 'EastPoint'].includes(p.name)) return false;
             if (p.type === 'angle') return false;
-            if (p.type === 'node' || p.type === 'point') return showExtraPoints;
+            if (p.type === 'node') return showExtraPoints || showNodeSignatures;
+            if (p.type === 'point') return showExtraPoints;
             if (p.type === 'star') return false; // Hide fixed stars from the visual wheel
             return true;
         });
@@ -576,11 +579,14 @@ export function InteractiveNatalChart({
             if (!p1 || !p2) return null;
 
             // Trigger exit animation by returning null when toggle is OFF
-            if (!showExpertSignatures) {
-                // 1. Hide Node aspects
-                if (p1.type === 'node' || p2.type === 'node') return null;
 
-                // 2. Hide Expert aspects (Quincunx, Quintile, Contra-Parallel)
+            // 1. Filter Nodes
+            if (!showNodeSignatures) {
+                if (p1.type === 'node' || p2.type === 'node') return null;
+            }
+
+            // 2. Filter Expert aspects (Quincunx, Quintile, Contra-Parallel)
+            if (!showExpertSignatures) {
                 // Always show: Conjunction, Opposition, Square, Trine, Sextile, Parallel
                 const BASIC_ASPECTS = ['Conjunction', 'Opposition', 'Square', 'Trine', 'Sextile', 'Parallel'];
                 if (!BASIC_ASPECTS.includes(asp.type)) return null;
@@ -618,7 +624,7 @@ export function InteractiveNatalChart({
 
             return { d, color, opacity, id: key, is_ghost: isGhost, ...asp };
         }).filter(Boolean);
-    }, [planetNodes, normalizedData.aspects, cx, cy, showExpertSignatures, orbStrictness, R]);
+    }, [planetNodes, normalizedData.aspects, cx, cy, showExpertSignatures, showNodeSignatures, orbStrictness, R]);
 
     const containerVariants = {
         hidden: { opacity: 0, scale: 0.95 },

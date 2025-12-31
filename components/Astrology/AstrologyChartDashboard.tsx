@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { InteractiveNatalChart } from './InteractiveNatalChart';
 import { normalizeChartData, SYMBOLS, ASPECT_CONFIG, ORB_LIMITS } from './chart-utils';
-import { AlertTriangle, Activity, Crosshair, Star, Info, LayoutTemplate, Zap, Triangle, Layers, Hexagon, RefreshCcw, Sparkles } from 'lucide-react';
+import { AlertTriangle, Activity, Crosshair, Star, Info, LayoutTemplate, Zap, Triangle, Layers, Hexagon, RefreshCcw, Sparkles, GitCommit } from 'lucide-react';
 import { detectChartPatterns } from '@/utils/astrology/pattern-detection';
 import { ChartLegend } from './ChartLegend';
 
@@ -22,7 +22,12 @@ export function AstrologyChartDashboard({
     showExtraPoints,
     setShowExtraPoints,
     showExpertSignatures,
+
     setShowExpertSignatures,
+    showNodes,
+    setShowNodes,
+    showNodeSignatures,
+    setShowNodeSignatures,
     selectedId,
     setSelectedId,
     orbStrictness = 'standard'
@@ -31,7 +36,12 @@ export function AstrologyChartDashboard({
     showExtraPoints?: boolean;
     setShowExtraPoints?: (show: boolean) => void;
     showExpertSignatures?: boolean;
+
     setShowExpertSignatures?: (show: boolean) => void;
+    showNodes?: boolean;
+    setShowNodes?: (show: boolean) => void;
+    showNodeSignatures: boolean;
+    setShowNodeSignatures: (show: boolean) => void;
     selectedId: string | null;
     setSelectedId: (id: string | null) => void;
     orbStrictness?: 'strict' | 'standard' | 'wide';
@@ -41,12 +51,17 @@ export function AstrologyChartDashboard({
     // Local State
     const [showTruePositions, setShowTruePositions] = useState(false);
     const [displayMode, setDisplayMode] = useState<'glyphs' | 'text'>('glyphs');
+    // REMOVED local showNodeSignatures state - now using prop
     const [activeTab, setActiveTab] = useState<'signatures' | 'key'>('signatures');
 
     // Detect Patterns
-    const patterns = React.useMemo(() =>
-        detectChartPatterns(chartData, { allowNodes: showExpertSignatures }),
-        [chartData, showExpertSignatures]
+    const patterns = React.useMemo(() => {
+        const res = detectChartPatterns(chartData, { allowNodes: showNodeSignatures });
+        console.log('[DEBUG] Patterns:', res.length, showNodeSignatures, res);
+        console.log('[DEBUG] ChartData Points:', Object.keys(chartData.points));
+        return res;
+    },
+        [chartData, showNodeSignatures]
     );
 
     // Filter patterns
@@ -55,7 +70,15 @@ export function AstrologyChartDashboard({
 
         // Filter by Tier if Expert Mode is OFF
         if (!showExpertSignatures) {
-            currentPatterns = currentPatterns.filter(p => p.tier === 'basic');
+            currentPatterns = currentPatterns.filter(p => {
+                // EXCEPTION: If Node Signatures is ON, always show patterns involving Nodes,
+                // even if they are technically "Expert" tier (like a Yod involving Nodes).
+                if (showNodeSignatures) {
+                    const hasNode = p.planets.some(pl => ['Rahu', 'Ketu', 'North Node', 'South Node'].includes(pl));
+                    if (hasNode) return true;
+                }
+                return p.tier === 'basic';
+            });
         }
 
         if (selectedId) {
@@ -81,6 +104,7 @@ export function AstrologyChartDashboard({
                 }, ...currentPatterns] as any;
             }
         }
+
         return currentPatterns;
     }, [patterns, selectedId, chartData, showExpertSignatures]);
 
@@ -160,6 +184,17 @@ export function AstrologyChartDashboard({
                             </button>
 
                             <button
+                                onClick={() => setShowNodeSignatures(!showNodeSignatures)}
+                                className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all border shadow-lg ${showNodeSignatures
+                                    ? 'bg-indigo-500/30 text-indigo-100 border-indigo-400/50'
+                                    : 'bg-[var(--bg-card)] text-[var(--text-secondary)] border-[var(--border-card)] hover:text-white'
+                                    }`}
+                            >
+                                <GitCommit size={12} className={showNodeSignatures ? 'animate-pulse' : ''} />
+                                <span className="hidden md:inline">Node Signatures: {showNodeSignatures ? 'ON' : 'OFF'}</span>
+                            </button>
+
+                            <button
                                 onClick={() => setShowExpertSignatures?.(!showExpertSignatures)}
                                 className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all border shadow-lg ${showExpertSignatures
                                     ? 'bg-purple-500/30 text-purple-100 border-purple-400/50'
@@ -181,6 +216,7 @@ export function AstrologyChartDashboard({
                                 selectedId={selectedId}
                                 showExtraPoints={showExtraPoints}
                                 showExpertSignatures={showExpertSignatures}
+                                showNodeSignatures={showNodeSignatures}
                                 showTruePositions={showTruePositions}
                                 orbStrictness={orbStrictness}
                                 displayMode={displayMode}
@@ -275,9 +311,12 @@ export function AstrologyChartDashboard({
                                                 const matchesPoint = asp.p1 === activeItem.id || asp.p2 === activeItem.id;
                                                 if (!matchesPoint) return false;
 
+                                                if (!showNodeSignatures) {
+                                                    // Filter Nodes (check both standard names and Vedic names)
+                                                    const NODES = ['North Node', 'South Node', 'Rahu', 'Ketu'];
+                                                    if (NODES.some(n => [asp.p1, asp.p2].includes(n))) return false;
+                                                }
                                                 if (!showExpertSignatures) {
-                                                    // Filter Nodes
-                                                    if (['North Node', 'South Node'].some(n => [asp.p1, asp.p2].includes(n))) return false;
                                                     // Filter Expert Aspects
                                                     const BASIC_ASPECTS = ['Conjunction', 'Opposition', 'Square', 'Trine', 'Sextile', 'Parallel'];
                                                     if (!BASIC_ASPECTS.includes(asp.type)) return false;

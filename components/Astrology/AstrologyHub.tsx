@@ -24,8 +24,10 @@ interface AstrologyHubProps {
     orbStrictness: OrbStrictness;
     showExtraPoints: boolean;
     setShowExtraPoints: (show: boolean) => void;
-    showNodeSignatures: boolean;
-    setShowNodeSignatures: (show: boolean) => void;
+    showExpertSignatures: boolean;
+    setShowExpertSignatures: (show: boolean) => void;
+    showNodes: boolean;
+    setShowNodes: (show: boolean) => void;
     viewPerspective: 'geocentric' | 'topocentric';
     onPerspectiveChange: (p: 'geocentric' | 'topocentric') => void;
     system: 'western' | 'vedic';
@@ -39,8 +41,10 @@ export function AstrologyHub({
     orbStrictness,
     showExtraPoints,
     setShowExtraPoints,
-    showNodeSignatures,
-    setShowNodeSignatures,
+    showExpertSignatures,
+    setShowExpertSignatures,
+    showNodes,
+    setShowNodes,
     viewPerspective,
     onPerspectiveChange,
     system,
@@ -49,6 +53,8 @@ export function AstrologyHub({
     const [activeTab, setActiveTab] = useState<TabId>('natal');
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [showEngineerAspects, setShowEngineerAspects] = useState(false);
+    // Lifted State for Node Signatures (Shared between Dashboard and Ledger)
+    const [showNodeSignatures, setShowNodeSignatures] = useState(true);
 
     // --- DATA NORMALIZATION LOGIC (MOVED FROM PAGE.TSX) ---
     const normalized = useMemo(() => {
@@ -170,11 +176,15 @@ export function AstrologyHub({
                         chartData={normalized}
                         showExtraPoints={showExtraPoints}
                         setShowExtraPoints={setShowExtraPoints}
-                        showNodeSignatures={showNodeSignatures}
-                        setShowNodeSignatures={setShowNodeSignatures}
+                        showExpertSignatures={showExpertSignatures}
+                        setShowExpertSignatures={setShowExpertSignatures}
+                        showNodes={showNodes}
+                        setShowNodes={setShowNodes}
                         selectedId={selectedId}
                         setSelectedId={setSelectedId}
                         orbStrictness={orbStrictness}
+                        showNodeSignatures={showNodeSignatures}
+                        setShowNodeSignatures={setShowNodeSignatures}
                     />
                 )}
 
@@ -207,6 +217,8 @@ export function AstrologyHub({
                         vedicData={vedicData}
                         selectedId={selectedId}
                         orbStrictness={orbStrictness}
+                        showExpertSignatures={showExpertSignatures}
+                        showNodes={showNodes}
                         showNodeSignatures={showNodeSignatures}
                         system={system}
                         setSystem={setSystem}
@@ -244,7 +256,7 @@ export function AstrologyHub({
                             <EngineerView
                                 key={`western-eng-view`}
                                 data={normalized}
-                                system={system}
+                                system={'western'}
                                 showExtraPoints={showExtraPoints}
                                 selectedId={selectedId}
                                 onSelect={(id: string) => setSelectedId(id)}

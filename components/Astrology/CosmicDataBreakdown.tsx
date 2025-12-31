@@ -12,10 +12,11 @@ interface Props {
     selectedId?: string | null;
     orbStrictness?: 'strict' | 'standard' | 'wide';
     showExpertSignatures?: boolean;
+    showNodeSignatures?: boolean;
     system?: 'western' | 'vedic';
 }
 
-export function CosmicLedgerTable({ chartData: rawData, orbStrictness = 'standard', showExpertSignatures = false, system = 'western' }: Props) {
+export function CosmicLedgerTable({ chartData: rawData, orbStrictness = 'standard', showExpertSignatures = false, showNodeSignatures = true, system = 'western' }: Props) {
     const [activeTab, setActiveTab] = useState<'main' | 'extras'>('main');
 
     // 1. Defensively handle data structure (Match ProVedicChart logic)
@@ -120,12 +121,17 @@ export function CosmicLedgerTable({ chartData: rawData, orbStrictness = 'standar
                                 const involvesPlanet = a.p1 === planet.name || a.p2 === planet.name;
                                 if (!involvesPlanet) return false;
                                 if (!showExpertSignatures) {
+                                    // EXCEPTION: If Node Signatures is ON, always show aspects involving Nodes
                                     const p1IsNode = ['North Node', 'South Node', 'Rahu', 'Ketu'].includes(a.p1);
                                     const p2IsNode = ['North Node', 'South Node', 'Rahu', 'Ketu'].includes(a.p2);
-                                    if (p1IsNode || p2IsNode) return false;
 
-                                    const BASIC_ASPECTS = ['Conjunction', 'Opposition', 'Square', 'Trine', 'Sextile', 'Parallel'];
-                                    if (!BASIC_ASPECTS.includes(a.type)) return false;
+                                    if (showNodeSignatures && (p1IsNode || p2IsNode)) {
+                                        // Allow it
+                                    } else {
+                                        if (p1IsNode || p2IsNode) return false;
+                                        const BASIC_ASPECTS = ['Conjunction', 'Opposition', 'Square', 'Trine', 'Sextile', 'Parallel'];
+                                        if (!BASIC_ASPECTS.includes(a.type)) return false;
+                                    }
                                 }
                                 return true;
                             })
@@ -317,12 +323,17 @@ export function CosmicLedgerTable({ chartData: rawData, orbStrictness = 'standar
 
                                                         // Node Signature & Expert Aspect Toggle
                                                         if (!showExpertSignatures) {
+                                                            // EXCEPTION: If Node Signatures is ON, always show aspects involving Nodes
                                                             const p1IsNode = ['North Node', 'South Node', 'Rahu', 'Ketu'].includes(a.p1);
                                                             const p2IsNode = ['North Node', 'South Node', 'Rahu', 'Ketu'].includes(a.p2);
-                                                            if (p1IsNode || p2IsNode) return false;
 
-                                                            const BASIC_ASPECTS = ['Conjunction', 'Opposition', 'Square', 'Trine', 'Sextile', 'Parallel'];
-                                                            if (!BASIC_ASPECTS.includes(a.type)) return false;
+                                                            if (showNodeSignatures && (p1IsNode || p2IsNode)) {
+                                                                // Allow it
+                                                            } else {
+                                                                if (p1IsNode || p2IsNode) return false;
+                                                                const BASIC_ASPECTS = ['Conjunction', 'Opposition', 'Square', 'Trine', 'Sextile', 'Parallel'];
+                                                                if (!BASIC_ASPECTS.includes(a.type)) return false;
+                                                            }
                                                         }
 
                                                         return true;
@@ -378,6 +389,8 @@ interface BreakdownProps {
     selectedId?: string | null;
     orbStrictness?: 'strict' | 'standard' | 'wide';
     showExpertSignatures?: boolean;
+    showNodeSignatures?: boolean;
+    showNodes?: boolean;
     // New Props for Controls
     system: 'western' | 'vedic';
     setSystem: (s: 'western' | 'vedic') => void;
@@ -391,6 +404,8 @@ export function CosmicDataBreakdown({
     selectedId,
     orbStrictness,
     showExpertSignatures,
+    showNodeSignatures,
+    showNodes,
     system,
     setSystem,
     viewPerspective,
@@ -429,6 +444,7 @@ export function CosmicDataBreakdown({
                     selectedId={selectedId}
                     orbStrictness={orbStrictness}
                     showExpertSignatures={showExpertSignatures}
+                    showNodeSignatures={showNodeSignatures}
                     system={system}
                 />
             </div>

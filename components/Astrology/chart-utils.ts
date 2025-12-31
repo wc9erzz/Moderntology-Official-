@@ -218,7 +218,18 @@ export const normalizeChartData = (input: any): ChartData => {
     }
 
     // Normalize Aspects (simple pass-through usually)
-    const aspects = Array.isArray(input.aspects) ? input.aspects : [];
+    const rawAspects = Array.isArray(input.aspects) ? input.aspects : [];
+
+    // Normalize Aspect Names to Match Point Names
+    const aspects = rawAspects.map((asp: any) => {
+        let p1 = asp.p1;
+        let p2 = asp.p2;
+        if (p1 === 'North Node') p1 = 'Rahu';
+        if (p1 === 'South Node') p1 = 'Ketu';
+        if (p2 === 'North Node') p2 = 'Rahu';
+        if (p2 === 'South Node') p2 = 'Ketu';
+        return { ...asp, p1, p2 };
+    });
 
     // Polyfill House Numbers (specifically for Vedic/Sidereal where engine might not return them)
     // Using Whole Sign House System logic relative to Ascendant
@@ -243,7 +254,7 @@ export const normalizeChartData = (input: any): ChartData => {
     if (aspects.length === 0) {
         const aspectPairs = [
             'Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto',
-            'North Node', 'South Node', 'Chiron', 'Ascendant', 'Midheaven'
+            'Rahu', 'Ketu', 'Chiron', 'Ascendant', 'Midheaven'
         ];
 
         for (let i = 0; i < aspectPairs.length; i++) {
@@ -281,7 +292,8 @@ export const normalizeChartData = (input: any): ChartData => {
                     checkAspect('Opposition', 180);
                 }
             }
-        }    }
+        }
+    }
 
     return {
         ...input,
